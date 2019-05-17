@@ -2,8 +2,12 @@ import os
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
+import torch
+from torch.utils.data import Dataset
+from torch.utils.data import DataLoader
+from torchvision import transforms
 
-DEBUG = 1
+DEBUG = 0
 
 def unpickle(file):
     with open(file, 'rb') as fo:
@@ -14,9 +18,7 @@ def show_one_cifar(img, label):
     img_aux = np.reshape(img[:1024], (32,32,1))
     img_aux = np.append(img_aux,np.reshape(img[1024:2048], (32,32,1)),2)
     img_aux = np.append(img_aux,np.reshape(img[2048:], (32,32,1)),2)
-    #img_aux = np.append
-    #img = np.reshape(img, (32,32))
-    print(np.shape(img_aux))
+    #print(np.shape(img_aux))
     imgplot = plt.imshow(img_aux)
     plt.show()
 
@@ -32,13 +34,18 @@ class Cifar_data:
         self.data_trn = np.array([])
         self.labels_tst = np.array([])
         self.data_tst = np.array([])
-    
+        self.transform = transforms.Compose(
+            [transforms.ToTensor(), #Converts numpy input to a pytorch tensor 
+             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))] #Normlaizes the  tensor input
+        )
+        #torch.from_numpy(label).long() # --> This is for converting the labels
 
 
     def extract_cifar_data(self):
-        dirpath = os.getcwd()
+        dirpath = os.path.dirname(os.path.realpath(__file__))
 
         try:
+            print(dirpath + self.data_path + '/meta')
             meta = unpickle(dirpath + self.data_path + '/meta')
             test = unpickle(dirpath + self.data_path + '/test')
             train = unpickle(dirpath + self.data_path + '/train')
