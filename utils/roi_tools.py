@@ -12,33 +12,31 @@ def area(a, b):  # returns None if rectangles don't intersect
         return dx * dy
 
 
-def RoI_pooling(feature_map, RoI_matrix, H, W):
+def RoI_pooling(feature_map, H = 32, W = 32):
     # Inputs:
-    # feature_map: matrix
-    # RoI_matrix: Nx5 matrix, where:
-    # N is the number of regions of interest
-    # The first column represents the image index
-    # The rest of the columns represent the coordinates x1 y1 x2 y2 of the top left and bottom right corenrs
-    # H and W are the desired dimensions of the output
-    for i in range(1):
+    # feature_map: matrix nxnx3 (cropped image)
+    # H and W are the desired dimensions of the output default setting:32x32
+
+    # Output: A WxHx3 matrix
+    for i in range(feature_map.shape[2]): # Should be 3 (RGB)
         x1 = 0  # RoI_matrix[i, 1]
         x2 = feature_map.shape[0]  # RoI_matrix[i, 3]
         y1 = 0  # RoI_matrix[i, 2]
         y2 = feature_map.shape[1]  # RoI_matrix[i, 4]
-        RoI_map[i, :, :] = feature_map[x1:x2, y1:y2]
+        RoI_map[:, :, i] = feature_map[x1:x2, y1:y2]
         w = abs(x1 - x2)
         h = abs(y1 - y2)
         height = h // H
         width = w // W
-        for j in range(w) :
+        for j in range(w) : # Should be n
             end_w = width * (j + 1) - 1
             if j == (W - 1):
                 end_w = w - 1
-        for k in range(H) :
-            end_h = height * (k + 1) - 1
-            if k == (H - 1) :
-                end_h = h - 1
-        RoI_reduced[i, j, k] = np.amax(RoI_map[j * width:end_w, k * height:end_h])
+            for k in range(H) : # Should be n
+                end_h = height * (k + 1) - 1
+                if k == (H - 1) :
+                    end_h = h - 1
+                RoI_reduced[j, k, i] = np.amax(RoI_map[j * width:end_w, k * height:end_h, i])
 
     return RoI_reduced
 
