@@ -59,7 +59,7 @@ def loadkitti(im_path, lbl_path=None):
     imdb = np.array([([]), ([]), ([]), ([])], dtype=[('image', 'float'), ('posX', 'float'),
                                                            ('posY', 'float'), ('numlabel', 'int')])
     imdb['image'] = images
-     imdb['label'] = labels['type']
+    imdb['label'] = labels['type']
     imdb['posX'] = labels['2d_bbox_right']-labels['2d_bbox_left']
     imdb['posY'] = labels['2d_bbox_bottom'] - labels['2d_bbox_top']
     imdb['numlabel'] = lbl_to_num(cfg.CIFARLABELS_TO_NUM, labels['type'])

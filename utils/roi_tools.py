@@ -20,11 +20,11 @@ def RoI_pooling(feature_map, RoI_matrix, H, W):
     # The first column represents the image index
     # The rest of the columns represent the coordinates x1 y1 x2 y2 of the top left and bottom right corenrs
     # H and W are the desired dimensions of the output
-    for i in range(RoI_matrix.shape[0]):
-        x1 = RoI_matrix[i, 1]
-        x2 = RoI_matrix[i, 3]
-        y1 = RoI_matrix[i, 2]
-        y2 = RoI_matrix[i, 4]
+    for i in range(1):
+        x1 = 0  # RoI_matrix[i, 1]
+        x2 = feature_map.shape[0]  # RoI_matrix[i, 3]
+        y1 = 0  # RoI_matrix[i, 2]
+        y2 = feature_map.shape[1]  # RoI_matrix[i, 4]
         RoI_map[i, :, :] = feature_map[x1:x2, y1:y2]
         w = abs(x1 - x2)
         h = abs(y1 - y2)
@@ -50,6 +50,7 @@ def checkOverlap(x, y, origIm, dist):
     yOrig = origIm['posY']
     labOrig = origIm['label']
     for i in range(len(xOrig)):
+
         if abs(xOrig[i]-x) <= dist and abs(yOrig[i]-y) <= dist :
             label = cfg.RELABEL(labOrig[i])
         else:
