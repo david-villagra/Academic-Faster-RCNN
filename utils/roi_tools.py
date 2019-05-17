@@ -42,7 +42,7 @@ def RoI_pooling(feature_map, H = 32, W = 32):
 
 
 def checkOverlap(x, y, origIm, dist):
-    w = cfg.GTOVERLAP_THRES
+    w = cfg.GTOVERLAP_CORE_THRES
     dist = dist*w
     xOrig = origIm['posX']
     yOrig = origIm['posY']

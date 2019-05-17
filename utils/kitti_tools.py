@@ -8,6 +8,22 @@ import glob
 import matplotlib.pyplot as plt
 
 
+class image:
+    image = numpy.array([])
+    label = numpy.array([])
+    X = numpy.array([])
+    Y = numpy.array([])
+    numLabel = numpy.array([])
+
+#
+# class anchor:
+#     image = numpy.array([])
+#     label = numpy.array([])
+#     X = numpy.array([])
+#     Y = numpy.array([])
+#     numLabel = numpy.array([])
+
+
 def preprocess_image(image):
     if cfg.USE_ZERO_MEAN_INPUT_NORMALIZATION is True:
         image = (image / 255.0 * 2.0 - 1.0)
