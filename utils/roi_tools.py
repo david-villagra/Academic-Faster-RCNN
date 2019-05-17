@@ -111,10 +111,10 @@ def randomBackground():
     if __name__ == '__main__':
         weight = np.random.uniform(0, 1, size=(1, 1, 3))
         weight = np.tile(weight, (32, 32, 1))
-    if i is 0:
+    if i == 0:
         image = np.random.uniform(0, 1, (32, 32, 3))
         image += weight
-    elif i is 1:
-        image = np.random.beta(np.rand.uniform(0, 1, 1), np.rand.uniform(0, 1, 1), (32, 32, 3))
+    elif i == 1:
+        image = np.random.beta(np.random.uniform(0, 1, 1), np.random.uniform(0, 1, 1), (32, 32, 3))
         image += weight
     return image
