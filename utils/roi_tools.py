@@ -108,9 +108,8 @@ def getAnchors(imdb, ratios, is_fix, stride):
 
 def randomBackground():
     i = np.random.randint(2, size=1)
-    if __name__ == '__main__':
-        weight = np.random.uniform(0, 1, size=(1, 1, 3))
-        weight = np.tile(weight, (32, 32, 1))
+    weight = np.random.uniform(0, 1, size=(1, 1, 3))
+    weight = np.tile(weight, (32, 32, 1))
     if i == 0:
         image = np.random.uniform(0, 1, (32, 32, 3))
         image += weight
