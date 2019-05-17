@@ -9,23 +9,23 @@ import matplotlib.pyplot as plt
 
 
 class Image:
-    image = numpy.array([])
-    label = numpy.array([])
-    X = numpy.array([])
-    Y = numpy.array([])
-    top = numpy.array([])
-    left = numpy.array([])
-    bottom = numpy.array([])
-    right = numpy.array([])
-    numLabel = numpy.array([])
+    image = np.array([])
+    label = np.array([])
+    X = np.array([])
+    Y = np.array([])
+    top = np.array([])
+    left = np.array([])
+    bottom = np.array([])
+    right = np.array([])
+    numLabel = np.array([])
 
 #
 # class anchor:
-#     image = numpy.array([])
-#     label = numpy.array([])
-#     X = numpy.array([])
-#     Y = numpy.array([])
-#     numLabel = numpy.array([])
+#     image = np.array([])
+#     label = np.array([])
+#     X = np.array([])
+#     Y = np.array([])
+#     numLabel = np.array([])
 
 
 def preprocess_image(image):
@@ -37,13 +37,20 @@ def preprocess_image(image):
 
 
 def read_annotation_file(filename,tp):
-    with open(filename) as f:
+    with open(cfg.LABLE_PATH + '/' + filename) as f:
         content = f.readlines()
     content = [x.strip().split(' ') for x in content]
     # anno = np.array([])
-    if tp == 'type' or tp == 'all':
-        anno['type'] = np.array([cfg.RELABEL(x[0].lower()) for x in content])
-    elif tp == 'position' or tp == 'all':
+    anno = {}
+    if tp == 'type':
+        anno['type'] = np.array([cfg.RELABEL[x[0].lower()] for x in content])
+    elif tp == 'position':
+        anno['2d_bbox_left'] = np.array([float(x[4]) for x in content])
+        anno['2d_bbox_top'] = np.array([float(x[5]) for x in content])
+        anno['2d_bbox_right'] = np.array([float(x[6]) for x in content])
+        anno['2d_bbox_bottom'] = np.array([float(x[7]) for x in content])
+    elif tp == 'all':
+        anno['type'] = np.array([cfg.RELABEL[x[0].lower()] for x in content])
         anno['2d_bbox_left'] = np.array([float(x[4]) for x in content])
         anno['2d_bbox_top'] = np.array([float(x[5]) for x in content])
         anno['2d_bbox_right'] = np.array([float(x[6]) for x in content])
@@ -55,7 +62,7 @@ def lbl_to_num(corpus, labels):
 
     digit = np.array([])
     for l in labels:
-        digit.append(corpus(l))
+        np.append(digit, corpus[l])
     return digit
 
 
@@ -68,18 +75,29 @@ def loadkitti(im_path, lbl_path=None):
             images.append(preprocess_image(plt.imread(im)))
 
     if not lbl_path is None:
-        labels = np.array([])
-        for l in lbl_path:
-            if l.endswith('.txt'):
-                labels.append(read_annotation_file(l, 'all'))
-
+        labels = {}
+        if lbl_path.endswith('.txt'):
+            labels = read_annotation_file(lbl_path, 'all')
+    # right now we just load one image
     imdb = Image()
-    np.vstack(imdb.image, images)
-    np.append(imdb.label, labels['type'])
-    np.append(imdb.X, labels['2d_bbox_right']-labels['2d_bbox_left'])
-    np.append(imdb.Y, labels['2d_bbox_bottom'] - labels['2d_bbox_top'])
-    np.append(imdb.numLabel, lbl_to_num(cfg.CIFARLABELS_TO_NUM, labels['type']))
-
+    imdb.image = images
+    # np.vstack(imdb.image, images)
+    # np.append(imdb.label, labels['type'])
+    # np.append(imdb.X, labels['2d_bbox_right']-labels['2d_bbox_left'])
+    # np.append(imdb.Y, labels['2d_bbox_bottom'] - labels['2d_bbox_top'])
+    # np.append(imdb.left, labels['2d_bbox_left'])
+    # np.append(imdb.top, labels['2d_bbox_top'])
+    # np.append(imdb.right, labels['2d_bbox_right'])
+    # np.append(imdb.bottom, labels['2d_bbox_bottom'])
+    # np.append(imdb.numLabel, lbl_to_num(cfg.CIFARLABELS_TO_NUM, labels['type']))
+    imdb.label = labels['type']
+    imdb.X = labels['2d_bbox_right']-labels['2d_bbox_left']
+    imdb.Y = labels['2d_bbox_bottom'] - labels['2d_bbox_top']
+    imdb.left = labels['2d_bbox_left']
+    imdb.top = labels['2d_bbox_top']
+    imdb.right = labels['2d_bbox_right']
+    imdb.bottom = labels['2d_bbox_bottom']
+    imdb.numLabel = lbl_to_num(cfg.CIFARLABELS_TO_NUM, labels['type'])
     return imdb
 
 #########################################

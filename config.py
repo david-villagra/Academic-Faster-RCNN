@@ -7,15 +7,16 @@ cfg.TEST_PATH = '/home/tobias/PycharmProjects/FasterRCNN/venv/images/testing'
 cfg.USE_ZERO_MEAN_INPUT_NORMALIZATION = True
 cfg.KITTILABELS = ["car", "cyclist", "dontcare", "misc", "pedestrian", "person_sitting", "train", "truck", "van"]
 cfg.RELABEL = {
-    "car": "vehicle",
-    "cyclist": "vehicle",
+    "car": "vehicles",
+    "cyclist": "vehicles",
     "dontcare": "background",
     "misc": "misc",
     "pedestrian": "people",
     "person_sitting": "people",
-    "train": "vehicle",
-    "truck": "vehicle",
-    "van": "vehicle"
+    "train": "vehicles",
+    "truck": "vehicles",
+    "tram": "vehicles",
+    "van": "vehicles"
 }
 cfg.CIFARLABELS = ["aquatic mammals", "fish",
                    "flowers",
@@ -34,7 +35,9 @@ cfg.CIFARLABELS = ["aquatic mammals", "fish",
                    "reptiles",
                    "small mammals",
                    "trees",
-                   "vehicles"]
+                   "vehicles",
+                   "background",
+                   "misc"]
 cfg.CIFARLABELS_TO_NUM = dict((name, index) for index,name in enumerate(cfg.CIFARLABELS))
 cfg.IMG_SCALE = (1242, 375)
 cfg.GTOVERLAP_CNTR_THRES = 0.5
