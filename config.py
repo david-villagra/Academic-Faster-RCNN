@@ -37,5 +37,5 @@ cfg.CIFARLABELS = ["aquatic mammals", "fish",
                    "vehicles"]
 cfg.CIFARLABELS_TO_NUM = dict((name, index) for index,name in enumerate(cfg.CIFARLABELS))
 cfg.IMG_SCALE = (1242, 375)
-cfg.GTOVERLAP_CORE_THRES = 0.5
+cfg.GTOVERLAP_CNTR_THRES = 0.5
 cfg.GTOVERLAP_AREA_THRES = 0.5

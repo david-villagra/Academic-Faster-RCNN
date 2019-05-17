@@ -8,11 +8,15 @@ import glob
 import matplotlib.pyplot as plt
 
 
-class image:
+class Image:
     image = numpy.array([])
     label = numpy.array([])
     X = numpy.array([])
     Y = numpy.array([])
+    top = numpy.array([])
+    left = numpy.array([])
+    bottom = numpy.array([])
+    right = numpy.array([])
     numLabel = numpy.array([])
 
 #
@@ -69,16 +73,12 @@ def loadkitti(im_path, lbl_path=None):
             if l.endswith('.txt'):
                 labels.append(read_annotation_file(l, 'all'))
 
-    # imdb = np.array([([]), ([]), ([]), ([]), ([])], dtype=[('image', 'float'), ('posX', 'float'),
-    #                                                        ('posY', 'float'), ('label', labels['type'].dtype.name),
-    #                                                        ('numlabel', 'int')])
-    imdb = np.array([([]), ([]), ([]), ([])], dtype=[('image', 'float'), ('posX', 'float'),
-                                                           ('posY', 'float'), ('numlabel', 'int')])
-    imdb['image'] = images
-    imdb['label'] = labels['type']
-    imdb['posX'] = labels['2d_bbox_right']-labels['2d_bbox_left']
-    imdb['posY'] = labels['2d_bbox_bottom'] - labels['2d_bbox_top']
-    imdb['numlabel'] = lbl_to_num(cfg.CIFARLABELS_TO_NUM, labels['type'])
+    imdb = Image()
+    np.vstack(imdb.image, images)
+    np.append(imdb.label, labels['type'])
+    np.append(imdb.X, labels['2d_bbox_right']-labels['2d_bbox_left'])
+    np.append(imdb.Y, labels['2d_bbox_bottom'] - labels['2d_bbox_top'])
+    np.append(imdb.numLabel, lbl_to_num(cfg.CIFARLABELS_TO_NUM, labels['type']))
 
     return imdb
 

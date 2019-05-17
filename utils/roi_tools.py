@@ -3,6 +3,7 @@ import torch
 import numpy as np
 from config import cfg
 from collections import namedtuple
+from kitti_tools import Image
 
 
 def area(a, b):  # returns None if rectangles don't intersect
@@ -42,7 +43,7 @@ def RoI_pooling(feature_map, H = 32, W = 32):
 
 
 def checkOverlap(x, y, origIm, dist):
-    w = cfg.GTOVERLAP_CORE_THRES
+    w = cfg.GTOVERLAP_CNRT_THRES
     dist = dist*w
     xOrig = origIm['posX']
     yOrig = origIm['posY']
@@ -50,7 +51,8 @@ def checkOverlap(x, y, origIm, dist):
     for i in range(len(xOrig)):
 
         if abs(xOrig[i]-x) <= dist and abs(yOrig[i]-y) <= dist :
-            label = cfg.RELABEL(labOrig[i])
+            if condition1:
+                label = cfg.RELABEL(labOrig[i])
         else:
             label = "background"
 
@@ -60,26 +62,23 @@ def checkOverlap(x, y, origIm, dist):
 def getAnchors(imdb, ratios, is_fix, stride):
     # anchdb contains anchors, anch_ctrs, anch_lbls
     if is_fix is True:
-        scale = imdb['image'].size
+        scale = imdb.image.size
 
-    anchdb['image'] = np.array([])
-    anchdb['anchX'] = np.array([])
-    anchdb['anchY'] = np.array([])
-    anchdb['label'] = np.array([])
-    for img in imdb:
+    anchdb = Image()
+    for img in imdb.image:
         for r in ratios:
             cntr = r/2.0  # just for rectangular anchors
             for ix in range(floor((scale[0]-r)/stride)):
                 for iy in range(floor((scale[1]-r)/stride)):
-                    anchdb['anchX'].append(cntr+ix*r)
-                    anchdb['anchY'].append(cntr+iy*r)
-                    img_temp = img['image']
+                    np.append(anchdb.X, cntr+ix*r)
+                    np.append(anchdb.Y, cntr+iy*r)
+                    img_temp = img
                     img_temp = img_temp[cntr-(ix+1)*r:cntr+(ix+1)*r][cntr-(iy+1)*r:cntr+(iy+1)*r][0:2]
-                    roi_matrix = np.transpose(np.array([0, r, 0, r]))
-                    anchdb['image'].append(RoI_pooling(img_temp, roi_matrix, 32, 32))
-                    label = checkOverlap(cntr+ix*r, cntr+iy*r, img, cntr)
-                    anchdb['label'].append(label)
-                    anchdb['numlabel'].append(cfg.CIFARLABELS_TO_NUM(label))
+                    # roi_matrix = np.transpose(np.array([0, r, 0, r]))
+                    np.vstack(anchdb['image'], RoI_pooling(img_temp, 32, 32))
+                    label = checkOverlap(cntr+ix*r, cntr+iy*r, img, cntr)  #################### to change
+                    np.append(anchdb.label, label)
+                    np.append(anchdb.numlabel, cfg.CIFARLABELS_TO_NUM(label))
     return anchdb
 
 
