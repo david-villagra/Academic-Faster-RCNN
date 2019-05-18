@@ -324,7 +324,7 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_LRs = test_LRScheduler() #
+    #res_LRs = test_LRScheduler() #
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)

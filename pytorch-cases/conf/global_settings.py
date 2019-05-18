@@ -91,7 +91,7 @@ OPTIM = 'sgd'
 
 LOSS = 'cel'  # cross entropy loss
 
-LR_FCT = 'scheduler'
+LR_FCT = 'MSscheduler'
 
 
 LRDECAY = 0.4
