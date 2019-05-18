@@ -9,7 +9,7 @@ def save_results(arguments, results):
         os.makedirs(arguments.output)
     except OSError:
         pass
-    with open(arguments.output + arguments.testname + '.txt', 'w+') as f:
+    with open(arguments.output +'/'+ arguments.testname + '.txt', 'w+') as f:
         f.write('net: '+str(arguments.net)+'\n')
         f.write('w: '+str(arguments.w)+'\n')
         f.write('b: '+str(arguments.b)+'\n')

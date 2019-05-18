@@ -77,9 +77,9 @@ LOG_DIR = 'runs'
 #save weights file per SAVE_EPOCH epoch
 SAVE_EPOCH = 10
 
-DATA_PATH = './cifar-100-python/'
-WEIGHT_PATH = './results/weights/'
-OUTDIR = './results/'
+DATA_PATH = './cifar-100-python'
+WEIGHT_PATH = './results/weights'
+OUTDIR = './results'
 SAVE_WEIGHTS = False
 USE_ZFNET = 0
 
