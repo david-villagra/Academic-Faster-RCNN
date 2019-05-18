@@ -70,7 +70,7 @@ def train(epoch, args, net, cifar100_training_loader, warmup_scheduler, loss_fun
         #writer.add_histogram("{}/{}".format(layer, attr), param, epoch)
 
 
-def eval_training(epoch, net,cifar100_test_loader, args):
+def eval_training(epoch, net,cifar100_test_loader, args, loss_function):
     net.eval()
 
     test_loss = 0.0 # cost function error
@@ -176,7 +176,7 @@ def train_net(args):
             train_scheduler.step(epoch)
 
         train(epoch, args, net, cifar100_training_loader, warmup_scheduler, loss_function, optimizer)
-        acc_temp, loss_temp, test_loss_temp, lr = eval_training(epoch, net, cifar100_test_loader, args)
+        acc_temp, loss_temp, test_loss_temp, lr = eval_training(epoch, net, cifar100_test_loader, args, loss_function)
         acc.append(acc_temp)
         loss.append(loss_temp)
         test_loss.append(test_loss_temp)
