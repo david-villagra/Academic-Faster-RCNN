@@ -3,6 +3,7 @@
 author baiyu
 """
 import os
+import numpy as np
 from datetime import datetime
 
 #CIFAR100 dataset path (python version)
@@ -20,8 +21,8 @@ CHECKPOINT_PATH = 'checkpoint'
 
 #total training epoches
 EPOCH = 100 
-MILESTONES = [20, 40, 70]
-
+#MILESTONES = [20, 40, 70]
+MILESTONES = list((np.array(range(49))+1)*2)
 #initial learning rate
 #INIT_LR = 0.1
 

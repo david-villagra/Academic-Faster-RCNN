@@ -137,6 +137,7 @@ if __name__ == '__main__':
         shuffle=args.s
     )
     
+    #TRAINING PARAMETERS AND LOSS FUNCTION
     loss_function = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
     train_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=settings.MILESTONES, gamma=0.2) #learning rate decay
