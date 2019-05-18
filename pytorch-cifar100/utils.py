@@ -198,11 +198,18 @@ def get_test_dataloader(mean, std, batch_size=16, num_workers=2, shuffle=True):
         shuffle: whether to shuffle 
     Returns: cifar100_test_loader:torch dataloader object
     """
-
-    transform_test = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize(mean, std)
-    ])
+    if settings.USE_ZFNET == 1:
+        transform_test = transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            transforms.Normalize(mean, std)
+        ])
+    else:
+        transform_test = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(mean, std)
+        ])
     #cifar100_test = CIFAR100Test(path, transform=transform_test)
     cifar100_test = torchvision.datasets.CIFAR100(root='./data', train=False, download=True, transform=transform_test)
     #print(type(cifar100_test))
