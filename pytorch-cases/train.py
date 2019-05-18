@@ -79,7 +79,7 @@ def eval_training(epoch, net,cifar100_test_loader):
     for (images, labels) in cifar100_test_loader:
         images = Variable(images)
         labels = Variable(labels)
-        if args_use_gpu is True:
+        if args.use_gpu is True:
             images = images.cuda()
             labels = labels.cuda()
 
