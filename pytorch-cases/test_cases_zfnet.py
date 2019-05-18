@@ -232,7 +232,7 @@ if __name__ == '__main__':
     parser.add_argument('-base_lr', type=float, default=1e-7, help='min learning rate')
     parser.add_argument('-max_lr', type=float, default=10, help='max learning rate')
     parser.add_argument('-num_iter', type=int, default=settings.EPOCH, help='num of iteration')
-    parser.add_argument('-use_gpu', nargs='+', type=bool, default=False, help='gpu device')
+    parser.add_argument('-use_gpu', nargs='+', type=bool, default=True, help='gpu device')
     parser.add_argument('-output', type=str, default=settings.OUTDIR, help='output directory')
     parser.add_argument('-optim', type=str, default=settings.OPTIM, help='optimizer to use')
     parser.add_argument('-act', type=str, default=settings.ACT, help='activation fct')
