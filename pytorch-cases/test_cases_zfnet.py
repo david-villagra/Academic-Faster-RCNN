@@ -1,10 +1,11 @@
 import unittest
-from easydict import EasyDict as edict
+# from easydict import EasyDict as edict
 import argparse
 from conf import settings
 import os
 from train import train_net
 import numpy as np
+
 
 def save_results(arguments, results):
     try:
