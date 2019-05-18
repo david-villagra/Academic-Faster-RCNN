@@ -1,5 +1,3 @@
-import unittest
-from easydict import EasyDict as edict
 import argparse
 from conf import settings
 import os
