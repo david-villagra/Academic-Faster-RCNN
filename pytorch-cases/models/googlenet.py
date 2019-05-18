@@ -79,7 +79,7 @@ class Inception(nn.Module):
 
 class GoogleNet(nn.Module):
 
-    def __init__(self, num_class=21):
+    def __init__(self, num_class=20):
         super().__init__()
         self.prelayer = nn.Sequential(
             nn.Conv2d(3, 192, kernel_size=3, padding=1),
