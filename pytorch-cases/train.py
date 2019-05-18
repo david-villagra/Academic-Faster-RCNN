@@ -47,11 +47,11 @@ def train(epoch, args, net, cifar100_training_loader, warmup_scheduler, loss_fun
         n_iter = (epoch - 1) * len(cifar100_training_loader) + batch_index + 1
 
         last_layer = list(net.children())[-1]
-        #for name, para in last_layer.named_parameters():
-            #if 'weight' in name:
-            #    writer.add_scalar('LastLayerGradients/grad_norm2_weights', para.grad.norm(), n_iter)
-            #if 'bias' in name:
-            #    writer.add_scalar('LastLayerGradients/grad_norm2_bias', para.grad.norm(), n_iter)
+        for name, para in last_layer.named_parameters():
+            if 'weight' in name:
+                writer.add_scalar('LastLayerGradients/grad_norm2_weights', para.grad.norm(), n_iter)
+            if 'bias' in name:
+                writer.add_scalar('LastLayerGradients/grad_norm2_bias', para.grad.norm(), n_iter)
 
         print('Training Epoch: {epoch} [{trained_samples}/{total_samples}]\tLoss: {:0.4f}\tLR: {:0.6f}'.format(
             loss.item(),
@@ -62,12 +62,12 @@ def train(epoch, args, net, cifar100_training_loader, warmup_scheduler, loss_fun
         ))
 
         #update training loss for each iteration
-        #writer.add_scalar('Train/loss', loss.item(), n_iter)
+        writer.add_scalar('Train/loss', loss.item(), n_iter)
 
     for name, param in net.named_parameters():
         layer, attr = os.path.splitext(name)
         attr = attr[1:]
-        #writer.add_histogram("{}/{}".format(layer, attr), param, epoch)
+        writer.add_histogram("{}/{}".format(layer, attr), param, epoch)
 
 
 def eval_training(epoch, net,cifar100_test_loader, args, loss_function):
@@ -96,8 +96,8 @@ def eval_training(epoch, net,cifar100_test_loader, args, loss_function):
     print()
 
     #add informations to tensorboard
-    #writer.add_scalar('Test/Average loss', test_loss / len(cifar100_test_loader.dataset), epoch)
-    #writer.add_scalar('Test/Accuracy', correct.float() / len(cifar100_test_loader.dataset), epoch)
+    writer.add_scalar('Test/Average loss', test_loss / len(cifar100_test_loader.dataset), epoch)
+    writer.add_scalar('Test/Accuracy', correct.float() / len(cifar100_test_loader.dataset), epoch)
 
     acc = correct.float() / len(cifar100_test_loader.dataset)
 
@@ -152,14 +152,14 @@ def train_net(args):
     #use tensorboard
     if not os.path.exists(args.output + '/log'):
         os.makedirs(args.output + '/log')
-    #writer = SummaryWriter(log_dir=os.path.join(
-    #        settings.LOG_DIR, args.net, settings.TIME_NOW))
+    writer = SummaryWriter(log_dir=os.path.join(
+            settings.LOG_DIR, args.net, settings.TIME_NOW))
 
     if args.use_gpu is True:
         input_tensor = torch.Tensor(12, 3, 32, 32).cuda()
     else:
         input_tensor = torch.Tensor(12, 3, 32, 32)
-    # writer.add_graph(net, Variable(input_tensor, requires_grad=True))
+    writer.add_graph(net, Variable(input_tensor, requires_grad=True))
 
     #create checkpoint folder to save model
     if not os.path.exists(checkpoint_path):
@@ -192,7 +192,7 @@ def train_net(args):
             if not epoch % settings.SAVE_EPOCH:
                 torch.save(net.state_dict(), checkpoint_path.format(net=args.net, epoch=epoch, type='regular'))
 
-    #writer.close()
+    writer.close()
 
     results = [acc, loss, test_loss]
     return results
