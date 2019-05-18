@@ -14,13 +14,6 @@ class TestOptimizer(unittest.TestCase):
     def test_Adam(self):
         self.assertEqual(True, False)
 
-    def test_RMSprop(self):
-        self.assertEqual(True, False)
-
-    def test_RReLU(self): # or SELU or
-        self.assertEqual(True, False)
-
-
 class TestActivation(unittest.TestCase):
 
     def test_ELU(self):
@@ -32,25 +25,10 @@ class TestActivation(unittest.TestCase):
     def test_ReLU(self):
         self.assertEqual(True, False)
 
-    def test_RReLU(self): # or SELU or
-        self.assertEqual(True, False)
-
 
 class TestPooling(unittest.TestCase):
 
     def test_maxPool(self):
-        self.assertEqual(True, False)
-
-    def test_avgPool(self):
-        self.assertEqual(True, False)
-
-    def test_LPPool(self):
-        self.assertEqual(True, False)
-
-
-class TestNormalization(unittest.TestCase):
-
-    def test_batchsize(self):
         self.assertEqual(True, False)
 
 
@@ -65,14 +43,18 @@ class TestLossFunction(unittest.TestCase):
     def test_MultiLabelMarginLoss(self):
         self.assertEqual(True, False)
 
+
 class TestLayer(unittest.TestCase):
 
     def test_layer1(self):
         self.assertEqual(True, False)
     # ...
 
-    def test_droput(self):
+    def test_dropuut(self):
         self.assertEqual(True, False)
+
+    def test_batchisze(self):
+        self.assertEqual(True,False)
 
 
 class TestROI(unittest.TestCase):
@@ -86,7 +68,7 @@ class TestROI(unittest.TestCase):
 
 class TestNetParameters(unittest.TestCase):
 
-    def test_cyclicLearning(self):
+    def test_cyclicLearning(self):  # or fixed rate
         self.assertEqual(True, False)
 
     def test_LRScheduler(self):         ################################ LR_finder implemented, use it ################

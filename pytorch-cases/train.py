@@ -1,10 +1,6 @@
 # train.py
 #!/usr/bin/env	python3
 
-""" train network using pytorch
-
-author baiyu
-"""
 
 import os
 import sys
