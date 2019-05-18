@@ -133,7 +133,7 @@ def test_scales(scales):   ############################################ DONE ###
     arg_scale.scales = scales
     string = ""
     string = [str(i)+" " for i in scales]
-    arg_scales.testname = 'scales'+ string
+    arg_scale.testname = 'scales'+ string
     results = train_net(arg_scale)
     save_results(arg_scale, results)
     return results
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-net', type=str, default='zfnet', help='net type')
     parser.add_argument('-w', type=int, default=2, help='number of workers for dataloader')
-    parser.add_argument('-b', type=int, default=100, help='batch size for dataloader')
+    parser.add_argument('-b', type=int, default=50, help='batch size for dataloader')
     parser.add_argument('-base_lr', type=float, default=1e-7, help='min learning rate')
     parser.add_argument('-max_lr', type=float, default=10, help='max learning rate')
     parser.add_argument('-num_iter', type=int, default=settings.EPOCH, help='num of iteration')
