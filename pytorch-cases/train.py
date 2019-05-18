@@ -151,7 +151,7 @@ def train_net(args):
 
     #use tensorboard
     if not os.path.exists(args.output + '/log'):
-        os.mkdir(args.output + '/log')
+        os.makedirs(args.output + '/log')
     #writer = SummaryWriter(log_dir=os.path.join(
     #        settings.LOG_DIR, args.net, settings.TIME_NOW))
 
