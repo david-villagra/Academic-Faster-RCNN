@@ -62,7 +62,7 @@ CIFAR100_TEST_STD = (0.20483289760348583, 0.21610958605664488, 0.209649891067538
 CHECKPOINT_PATH = 'checkpoint'
 
 #total training epoches
-EPOCH = 2 #30
+EPOCH = 20 #30
 MILESTONES = list((np.array(range(6))+1)*5)
 
 #initial learning rate
@@ -77,16 +77,17 @@ LOG_DIR = 'runs'
 #save weights file per SAVE_EPOCH epoch
 SAVE_EPOCH = 10
 
-DATA_PATH = '/home/tobias/PycharmProjects/PlanB/venv/cifar-100-python/'
-WEIGHT_PATH = '/home/tobias/PycharmProjects/PlanB/venv/weights/'
-OUTDIR = '/home/tobias/PycharmProjects/PlanB/venv/results/'
+DATA_PATH = './cifar-100-python/'
+WEIGHT_PATH = './results/weights/'
+OUTDIR = './results/'
+SAVE_WEIGHTS = True
 USE_ZFNET = 0
 
-ACT = 'relu'
+ACT = 'relu'  # set manually to 'lrelu'
 
 OPTIM = 'sgd'
 
-LOSS = 'l1'
+LOSS = 'cel'  # cross entropy loss
 
 LR_FCT = 'scheduler'
 

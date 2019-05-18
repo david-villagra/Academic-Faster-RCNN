@@ -11,6 +11,14 @@
 
 import torch
 import torch.nn as nn
+from conf import settings
+
+def nrelu():
+    if settings.ACT is 'relu':
+        nn.ReLU(inplace=True)
+    elif settings.ACT is 'lrelu':
+        nn.LeakyReLU(inplace=True)
+
 
 class Inception(nn.Module):
     def __init__(self, input_channels, n1x1, n3x3_reduce, n3x3, n5x5_reduce, n5x5, pool_proj):
@@ -20,17 +28,20 @@ class Inception(nn.Module):
         self.b1 = nn.Sequential(
             nn.Conv2d(input_channels, n1x1, kernel_size=1),
             nn.BatchNorm2d(n1x1),
-            nn.ReLU(inplace=True)
+            # nn.ReLU(inplace=True),
+            nn.ReLU(inplace=True),
         )
 
         #1x1conv -> 3x3conv branch
         self.b2 = nn.Sequential(
             nn.Conv2d(input_channels, n3x3_reduce, kernel_size=1),
             nn.BatchNorm2d(n3x3_reduce),
+            # nn.ReLU(inplace=True),
             nn.ReLU(inplace=True),
             nn.Conv2d(n3x3_reduce, n3x3, kernel_size=3, padding=1),
             nn.BatchNorm2d(n3x3),
-            nn.ReLU(inplace=True)
+            # nn.ReLU(inplace=True),
+            nn.ReLU(inplace=True),
         )
 
         #1x1conv -> 5x5conv branch
@@ -40,13 +51,16 @@ class Inception(nn.Module):
         self.b3 = nn.Sequential(
             nn.Conv2d(input_channels, n5x5_reduce, kernel_size=1),
             nn.BatchNorm2d(n5x5_reduce),
+            # nn.ReLU(inplace=True),
             nn.ReLU(inplace=True),
             nn.Conv2d(n5x5_reduce, n5x5, kernel_size=3, padding=1),
             nn.BatchNorm2d(n5x5, n5x5),
+            # nn.ReLU(inplace=True),
             nn.ReLU(inplace=True),
             nn.Conv2d(n5x5, n5x5, kernel_size=3, padding=1),
             nn.BatchNorm2d(n5x5),
-            nn.ReLU(inplace=True)
+            # nn.ReLU(inplace=True),
+            nn.ReLU(inplace=True),
         )
 
         #3x3pooling -> 1x1conv
@@ -55,7 +69,8 @@ class Inception(nn.Module):
             nn.MaxPool2d(3, stride=1, padding=1),
             nn.Conv2d(input_channels, pool_proj, kernel_size=1),
             nn.BatchNorm2d(pool_proj),
-            nn.ReLU(inplace=True)
+            # nn.ReLU(inplace=True),
+            nn.ReLU(inplace=True),
         )
     
     def forward(self, x):
@@ -69,7 +84,8 @@ class GoogleNet(nn.Module):
         self.prelayer = nn.Sequential(
             nn.Conv2d(3, 192, kernel_size=3, padding=1),
             nn.BatchNorm2d(192),
-            nn.ReLU(inplace=True)
+            # nn.ReLU(inplace=True),
+            nn.ReLU(inplace=True),
         )
 
         #although we only use 1 conv layer as prelayer,
@@ -125,6 +141,7 @@ class GoogleNet(nn.Module):
         output = self.linear(output)
 
         return output
+
 
 def googlenet():
     return GoogleNet()

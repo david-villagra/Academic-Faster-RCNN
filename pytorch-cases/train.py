@@ -24,8 +24,7 @@ from conf import settings
 from utils import get_network, get_training_dataloader, get_test_dataloader, WarmUpLR
 
 
-def train(epoch,args, net, cifar100_training_loader, warmup_scheduler, loss_function, optimizer):
-
+def train(epoch, args, net, cifar100_training_loader, warmup_scheduler, loss_function, optimizer):
 
     net.train()
     for batch_index, (images, labels) in enumerate(cifar100_training_loader):
@@ -110,6 +109,7 @@ def train_net(args):
         
     #data preprocessing:
     cifar100_training_loader = get_training_dataloader(
+        args,
         settings.CIFAR100_TRAIN_MEAN,
         settings.CIFAR100_TRAIN_STD,
         num_workers=args.w,
@@ -118,23 +118,38 @@ def train_net(args):
     )
     
     cifar100_test_loader = get_test_dataloader(
+        args,
         settings.CIFAR100_TRAIN_MEAN,
         settings.CIFAR100_TRAIN_STD,
         num_workers=args.w,
         batch_size=args.b,
         shuffle=args.dat_sh
     )
-    
-    loss_function = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=args.lr_init, momentum=0.9, weight_decay=5e-4)
-    train_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=settings.MILESTONES, gamma=0.2) #learning rate decay
+
+    if args.loss is 'cel':
+        loss_function = nn.CrossEntropyLoss()
+    elif args.loss is 'smoothl1':
+        loss_function = nn.SmoothL1Loss()
+    elif args.loss is 'mlml':
+        loss_function = nn.MultiLabelMarginLoss()
+
+    if args.optim is 'sgd':
+        optimizer = optim.SGD(net.parameters(), lr=args.lr_init, momentum=0.9, weight_decay=args.wdecay)
+    elif args.optim is 'adam':
+        optimizer = optim.Adam(net.parameters(), lr=args.lr_init, weight_decay=args.wdecay)
+
+    if args.lr_fct is 'MSscheduler':
+        train_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=args.mil, gamma=0.2) #learning rate decay
+    elif args.lr_fct is 'cyclic':
+        train_scheduler = optim.lr_scheduler.CyclicLR(optimizer, base_lr=args.base_lr, max_lr=args.max_lr, cycle_momentum=True)
+
     iter_per_epoch = len(cifar100_training_loader)
     warmup_scheduler = WarmUpLR(optimizer, iter_per_epoch * args.warm)
     checkpoint_path = os.path.join(settings.CHECKPOINT_PATH, args.net, settings.TIME_NOW)
 
     #use tensorboard
-    if not os.path.exists(settings.LOG_DIR):
-        os.mkdir(settings.LOG_DIR)
+    if not os.path.exists(args.output + '/log'):
+        os.mkdir(args.output + '/log')
     #writer = SummaryWriter(log_dir=os.path.join(
     #        settings.LOG_DIR, args.net, settings.TIME_NOW))
 
@@ -153,23 +168,27 @@ def train_net(args):
     acc = []
     loss = []
     test_loss = []
-    for epoch in range(1, settings.EPOCH):
+
+    for epoch in range(1, args.num_iter):
         if epoch > args.warm:
             train_scheduler.step(epoch)
 
         train(epoch, args, net, cifar100_training_loader, warmup_scheduler, loss_function, optimizer)
-        acc_temp, loss_temp, test_loss_temp = eval_training(epoch, net,cifar100_test_loader)
+        acc_temp, loss_temp, test_loss_temp, lr = eval_training(epoch, net, cifar100_test_loader)
         acc.append(acc_temp)
         loss.append(loss_temp)
         test_loss.append(test_loss_temp)
         #start to save best performance model after learning rate decay to 0.01 
-        if epoch > settings.MILESTONES[1] and best_acc < acc:
-            torch.save(net.state_dict(), checkpoint_path.format(net=args.net, epoch=epoch, type='best'))
-            best_acc = acc
-            continue
+        #if epoch > settings.MILESTONES[1] and best_acc < acc:
 
-        if not epoch % settings.SAVE_EPOCH:
-            torch.save(net.state_dict(), checkpoint_path.format(net=args.net, epoch=epoch, type='regular'))
+        if settings.SAVE_WEIGHTS is True:
+            if epoch > args.mil[1] and best_acc < acc:
+                torch.save(net.state_dict(), checkpoint_path.format(net=args.net, epoch=epoch, type='best'))
+                best_acc = acc
+                continue
+
+            if not epoch % settings.SAVE_EPOCH:
+                torch.save(net.state_dict(), checkpoint_path.format(net=args.net, epoch=epoch, type='regular'))
 
     #writer.close()
 

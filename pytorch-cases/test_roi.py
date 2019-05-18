@@ -10,7 +10,7 @@ from conf import settings
 
 
 # if __name__ == '__main__':
-def test(ratios=[32, 64, 96], stride=16, imdb_path=settings.IMDB_PATH, label_path=settings.LABEL_PATHF):
+def test(ratios=[32, 64, 96], stride=16, imdb_path=settings.IMDB_PATH, label_path=settings.LABEL_PATH):
 
     im_files = os.listdir(imdb_path)
     lbl_files = os.listdir(label_path)
