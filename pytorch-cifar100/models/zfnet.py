@@ -9,7 +9,7 @@ import torch
 
 
 class ZFNet(nn.Module):
-    def __init__(self, num_classes=100):
+    def __init__(self, num_classes=20):
         super(ZFNet, self).__init__()
         self.features = nn.Sequential(
             nn.Conv2d(3, 96, kernel_size=7, stride=2),
