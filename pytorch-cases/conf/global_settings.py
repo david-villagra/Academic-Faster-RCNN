@@ -6,6 +6,8 @@ import os
 from datetime import datetime
 import numpy as np
 
+currentDirectory = os.getcwd()
+
 IMDB_PATH = '/home/tobias/PycharmProjects/FasterRCNN/venv/images/training'  # Kitti data
 LABEL_PATH = '/home/tobias/PycharmProjects/FasterRCNN/venv/label'           # Kitti labels
 TEST_PATH = '/home/tobias/PycharmProjects/FasterRCNN/venv/images/testing'   # Kitti test
@@ -77,9 +79,9 @@ LOG_DIR = 'runs'
 #save weights file per SAVE_EPOCH epoch
 SAVE_EPOCH = 10
 
-DATA_PATH = './cifar-100-python'
-WEIGHT_PATH = './results/weights'
-OUTDIR = './results'
+DATA_PATH = currentDirectory+'/cifar-100-python'
+WEIGHT_PATH = currentDirectory+'/results/weights'
+OUTDIR = currentDirectory+'/results'
 SAVE_WEIGHTS = False
 USE_ZFNET = 0
 
