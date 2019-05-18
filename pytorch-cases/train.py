@@ -101,23 +101,23 @@ def eval_training(epoch):
 
     return correct.float() / len(cifar100_test_loader.dataset)
 
-if __name__ == '__main__':
-    
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-net', type=str, required=True, help='net type')
-    parser.add_argument('-gpu', type=bool, default=True, help='use gpu or not')
-    parser.add_argument('-w', type=int, default=2, help='number of workers for dataloader')
-    parser.add_argument('-b', type=int, default=128, help='batch size for dataloader')
-    parser.add_argument('-s', type=bool, default=True, help='whether shuffle the dataset')
-    parser.add_argument('-warm', type=int, default=1, help='warm up training phase')
-    parser.add_argument('-lr', type=float, default=0.1, help='initial learning rate')
-    args = parser.parse_args()
 
-    CPU_ONLY = 1
-    if CPU_ONLY:
-        net = get_network(args)
-    else: 
-        net = get_network(args, use_gpu=args.gpu)
+def train_net(args):  #####################
+
+# if __name__ == '__main__':
+#
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument('-net', type=str, required=True, help='net type')
+#     parser.add_argument('-gpu', type=bool, default=True, help='use gpu or not')
+#     parser.add_argument('-w', type=int, default=2, help='number of workers for dataloader')
+#     parser.add_argument('-b', type=int, default=128, help='batch size for dataloader')
+#     parser.add_argument('-s', type=bool, default=True, help='whether shuffle the dataset')
+#     parser.add_argument('-warm', type=int, default=1, help='warm up training phase')
+#     parser.add_argument('-lr', type=float, default=0.1, help='initial learning rate')
+#     args = parser.parse_args()
+#     parser.net = 'zfnet'
+
+    net = get_network(args)
         
     #data preprocessing:
     cifar100_training_loader = get_training_dataloader(

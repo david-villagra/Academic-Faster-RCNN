@@ -36,8 +36,6 @@ def randomBackground():
         image[32 * 32:2 * 32 * 32] = weights[0] * image[32 * 32:2*32*32]
         image[2 * 32 * 32:3 * 32 * 32] = weights[0] * image[2 * 32 * 32:3 * 32 * 32]
         image = np.uint8(image)
-
-
     return image
 
 

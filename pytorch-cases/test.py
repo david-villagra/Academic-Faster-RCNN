@@ -52,6 +52,7 @@ def test(net='zfnet', weights=cfg.WEIGHT_PATH, gpu=True, b=16, s=True, output=cf
 
     for n_iter, (image, label) in enumerate(cifar100_test_loader):
         print("iteration: {}\ttotal {} iterations".format(n_iter + 1, len(cifar100_test_loader)))
+
         image = Variable(image).cuda()
         label = Variable(label).cuda()
         output = net(image)

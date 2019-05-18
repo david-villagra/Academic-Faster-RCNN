@@ -18,39 +18,17 @@ import globalsettings as conf
 def get_network(args, use_gpu=True):
     """ return given network
     """
-
-    if args.net == 'vgg16':
-        from models.vgg import vgg16_bn
-        net = vgg16_bn()
-     elif args.net == 'vgg19':
-        from models.vgg import vgg19_bn
-        net = vgg19_bn()
-     elif args.net == 'densenet201':
-        from models.densenet import densenet201
-        net = densenet201()
-    elif args.net == 'googlenet':
-        from models.googlenet import googlenet
+    if args.net == 'googlenet':
+        from models.senet import zfnet
         net = googlenet()
-    elif args.net == 'resnet101':
-        from models.resnet import resnet101
-        net = resnet101()
-    elif args.net == 'resnext101':
-        from models.resnext import resnext101
-        net = resnext101()
-    elif args.net == 'squeezenet':
-        from models.squeezenet import squeezenet
-        net = squeezenet()
-    elif args.net == 'mobilenetv2':
-        from models.mobilenetv2 import mobilenetv2
-        net = mobilenetv2()
-    elif args.net == 'zfnet':
+    if args.net == 'zfnet':
         from models.senet import zfnet
         net = zfnet()
     else:
         print('the network name you have entered is not supported yet')
         sys.exit()
-    CPU_ONLY = 1
-    if CPU_ONLY != 1 :
+    #CPU_ONLY = 1
+    if use_gpu is True:
         net = net.cuda()
 
     return net
@@ -67,15 +45,26 @@ def get_training_dataloader(mean, std, batch_size=16, num_workers=2, shuffle=Tru
         shuffle: whether to shuffle 
     Returns: train_data_loader:torch dataloader object
     """
-
-    transform_train = transforms.Compose([
-        #transforms.ToPILImage(),
-        transforms.RandomCrop(32, padding=4),
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomRotation(15),
-        transforms.ToTensor(),
-        transforms.Normalize(mean, std)
-    ])
+    if settings.USE_ZFNET == 1:
+        transform_train = transforms.Compose([
+            #transforms.ToPILImage(),
+            #transforms.RandomCrop(32, padding=4),
+            transforms.RandomResizedCrop(224-4-4),
+            transforms.Pad(4),
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomRotation(15),
+            transforms.ToTensor(),
+            transforms.Normalize(mean, std)
+        ])
+    else:
+        transform_train = transforms.Compose([
+            #transforms.ToPILImage(),
+            transforms.RandomCrop(32, padding=4),
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomRotation(15),
+            transforms.ToTensor(),
+            transforms.Normalize(mean, std)
+        ])
     #cifar100_training = CIFAR100Train(path, transform=transform_train)
     cifar100_training = torchvision.datasets.CIFAR100(root=conf.DATA_PATH, train=True, download=False, transform=transform_train)  #####################################
     cifar100_training_loader = DataLoader(
@@ -96,6 +85,7 @@ def get_test_dataloader(mean, std, batch_size=16, num_workers=2, shuffle=True):
     """
 
     transform_test = transforms.Compose([
+        transforms.RandomResizedCrop(224-4-4),
         transforms.ToTensor(),
         transforms.Normalize(mean, std)
     ])
