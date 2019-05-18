@@ -80,7 +80,7 @@ SAVE_EPOCH = 10
 DATA_PATH = './cifar-100-python/'
 WEIGHT_PATH = './results/weights/'
 OUTDIR = './results/'
-SAVE_WEIGHTS = True
+SAVE_WEIGHTS = False
 USE_ZFNET = 0
 
 ACT = 'relu'  # set manually to 'lrelu'

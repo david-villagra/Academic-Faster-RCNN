@@ -141,7 +141,8 @@ def train_net(args):
     if args.lr_fct is 'MSscheduler':
         train_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=args.mil, gamma=0.2) #learning rate decay
     elif args.lr_fct is 'cyclic':
-        train_scheduler = optim.lr_scheduler.CyclicLR(optimizer, base_lr=args.base_lr, max_lr=args.max_lr, cycle_momentum=True)
+        train_scheduler = optim.lr_scheduler.CyclicLR(optimizer, base_lr=args.base_lr, max_lr=args.max_lr,
+                                                      cycle_momentum=True)
 
     iter_per_epoch = len(cifar100_training_loader)
     warmup_scheduler = WarmUpLR(optimizer, iter_per_epoch * args.warm)

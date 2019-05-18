@@ -50,7 +50,7 @@ def get_training_dataloader(args, mean, std, batch_size=16, num_workers=2, shuff
             #transforms.ToPILImage(),
             #transforms.RandomCrop(32, padding=4),
             transforms.RandomResizedCrop(224-4-4),
-            # transforms.ColorJitter(brightness=0.05, contrast=0.05, saturation=0.05, hue=0.05),
+            transforms.ColorJitter(brightness=0.05, contrast=0.05, saturation=0.05, hue=0.05),
             transforms.Pad(4),
             transforms.RandomHorizontalFlip(),
             transforms.RandomRotation(15),
@@ -61,7 +61,7 @@ def get_training_dataloader(args, mean, std, batch_size=16, num_workers=2, shuff
         transform_train = transforms.Compose([
             #transforms.ToPILImage(),
             transforms.RandomCrop(32, padding=4),
-            #transforms.ColorJitter(brightness=0.05, contrast=0.05, saturation=0.05, hue=0.05),
+            transforms.ColorJitter(brightness=0.05, contrast=0.05, saturation=0.05, hue=0.05),
             transforms.RandomHorizontalFlip(),
             transforms.RandomRotation(15),
             transforms.ToTensor(),
