@@ -12,23 +12,22 @@ from torch.optim.lr_scheduler import _LRScheduler
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-import globalsettings as conf
+from conf import settings
 #from dataset import CIFAR100Train, CIFAR100Test
 
-def get_network(args, use_gpu=True):
+def get_network(args):
     """ return given network
     """
     if args.net == 'googlenet':
-        from models.senet import zfnet
+        from models.googlenet import googlenet
         net = googlenet()
     if args.net == 'zfnet':
-        from models.senet import zfnet
+        from models.zfnet import zfnet
         net = zfnet()
     else:
         print('the network name you have entered is not supported yet')
         sys.exit()
-    #CPU_ONLY = 1
-    if use_gpu is True:
+    if args.use_gpu is True:
         net = net.cuda()
 
     return net
@@ -66,7 +65,7 @@ def get_training_dataloader(mean, std, batch_size=16, num_workers=2, shuffle=Tru
             transforms.Normalize(mean, std)
         ])
     #cifar100_training = CIFAR100Train(path, transform=transform_train)
-    cifar100_training = torchvision.datasets.CIFAR100(root=conf.DATA_PATH, train=True, download=False, transform=transform_train)  #####################################
+    cifar100_training = torchvision.datasets.CIFAR100(root=settings.DATA_PATH, train=True, download=True, transform=transform_train)  #####################################
     cifar100_training_loader = DataLoader(
         cifar100_training, shuffle=shuffle, num_workers=num_workers, batch_size=batch_size)
 
@@ -90,7 +89,7 @@ def get_test_dataloader(mean, std, batch_size=16, num_workers=2, shuffle=True):
         transforms.Normalize(mean, std)
     ])
     #cifar100_test = CIFAR100Test(path, transform=transform_test)
-    cifar100_test = torchvision.datasets.CIFAR100(root=conf.DATA_PATH, train=False, download=False, transform=transform_test)
+    cifar100_test = torchvision.datasets.CIFAR100(root=settings.DATA_PATH, train=False, download=True, transform=transform_test)
     cifar100_test_loader = DataLoader(
         cifar100_test, shuffle=shuffle, num_workers=num_workers, batch_size=batch_size)
 

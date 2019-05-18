@@ -5,11 +5,12 @@ from conf.global_settings import cfg
 from utils.kitti_tools import loadkitti
 from utils.roi_tools import getAnchors
 import os
+from conf import settings
 # from net import predict
 
 
 # if __name__ == '__main__':
-def test(ratios=[32, 64, 96], stride=16, imdb_path=cfg.IMDB_PATH, label_path=cfg.LABEL_PATH):
+def test(ratios=[32, 64, 96], stride=16, imdb_path=settings.IMDB_PATH, label_path=settings.LABEL_PATHF):
 
     im_files = os.listdir(imdb_path)
     lbl_files = os.listdir(label_path)

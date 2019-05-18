@@ -14,7 +14,7 @@ from torch.autograd import Variable
 
 from conf import settings
 from utils import get_network, get_test_dataloader
-import globalsettings as cfg
+from conf import settings
 
 #if __name__ == '__main__':
 
@@ -25,11 +25,11 @@ import globalsettings as cfg
     # parser.add_argument('-w', type=int, default=2, help='number of workers for dataloader')
     # parser.add_argument('-b', type=int, default=16, help='batch size for dataloader')
     # parser.add_argument('-s', type=bool, default=True, help='whether shuffle the dataset')
-    # parser.add_argument('-output', type=str, default=cfg.OUTDIR, help='output directory')
+    # parser.add_argument('-output', type=str, default=settings.OUTDIR, help='output directory')
     # args = parser.parse_args()
 
 
-def test(net='zfnet', weights=cfg.WEIGHT_PATH, gpu=True, b=16, s=True, output=cfg.DATA_PATH):  #####################
+def test(net='zfnet', weights=settings.WEIGHT_PATH, gpu=True, b=16, s=True, output=settings.DATA_PATH):  #####################
     net = get_network(net=net, weights=weights, use_gpu=gpu, w=2, b=b, s=s, output=output)     #####################
 
     cifar100_test_loader = get_test_dataloader(

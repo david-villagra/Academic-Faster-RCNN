@@ -4,6 +4,7 @@ author baiyu
 """
 import os
 from datetime import datetime
+import numpy as np
 
 IMDB_PATH = '/home/tobias/PycharmProjects/FasterRCNN/venv/images/training'  # Kitti data
 LABEL_PATH = '/home/tobias/PycharmProjects/FasterRCNN/venv/label'           # Kitti labels
@@ -42,7 +43,7 @@ CIFARLABELS = ["aquatic mammals", "fish",
                    "vehicles",
                    "background",
                    "misc"]
-CIFARLABELS_TO_NUM = dict((name, index) for index,name in enumerate(cfg.CIFARLABELS))
+CIFARLABELS_TO_NUM = dict((name, index) for index,name in enumerate(CIFARLABELS))
 IMG_SCALE = (1242, 375)
 GTOVERLAP_CNTR_THRES = 0.5
 GTOVERLAP_AREA_THRES = 0.5
@@ -61,8 +62,8 @@ CIFAR100_TEST_STD = (0.20483289760348583, 0.21610958605664488, 0.209649891067538
 CHECKPOINT_PATH = 'checkpoint'
 
 #total training epoches
-EPOCH = 100
-MILESTONES = list((np.array(range(49))+1)*2)
+EPOCH = 2 #30
+MILESTONES = list((np.array(range(6))+1)*5)
 
 #initial learning rate
 #INIT_LR = 0.1
@@ -76,9 +77,9 @@ LOG_DIR = 'runs'
 #save weights file per SAVE_EPOCH epoch
 SAVE_EPOCH = 10
 
-DATA_PATH = '/home/tobias/PycharmProjects/PlanB/venv/cifar-100-python'
-WEIGHT_PATH = '/home/tobias/PycharmProjects/PlanB/venv/weights'
-
+DATA_PATH = '/home/tobias/PycharmProjects/PlanB/venv/cifar-100-python/'
+WEIGHT_PATH = '/home/tobias/PycharmProjects/PlanB/venv/weights/'
+OUTDIR = '/home/tobias/PycharmProjects/PlanB/venv/results/'
 USE_ZFNET = 0
 
 ACT = 'relu'
@@ -87,9 +88,11 @@ OPTIM = 'sgd'
 
 LOSS = 'l1'
 
-LR = 'scheduler'
+LR_FCT = 'scheduler'
 
-DECAY = 0.2
+
+
+LRDECAY = 0.4
 
 PIXSHUFFLE = False
 
@@ -101,9 +104,7 @@ SCALE = [32, 64, 96]
 
 NMS = False
 
+WDECAY = 5e-4
 
-
-
-
-
+LR_INIT = 0.1
 
