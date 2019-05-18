@@ -154,7 +154,7 @@ if __name__ == '__main__':
         input_tensor = torch.Tensor(12, 3, 32, 32).cuda()
     else:
         input_tensor = torch.Tensor(12, 3, 32, 32)
-    writer.add_graph(net, Variable(input_tensor, requires_grad=True))
+    #writer.add_graph(net, Variable(input_tensor, requires_grad=True))
 
     #create checkpoint folder to save model
     if not os.path.exists(checkpoint_path):
