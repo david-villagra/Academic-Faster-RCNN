@@ -19,8 +19,8 @@ CIFAR100_TRAIN_STD = (0.2673342858792401, 0.2564384629170883, 0.2761504713256840
 CHECKPOINT_PATH = 'checkpoint'
 
 #total training epoches
-EPOCH = 200 
-MILESTONES = [60, 120, 160]
+EPOCH = 100 
+MILESTONES = [20, 40, 70]
 
 #initial learning rate
 #INIT_LR = 0.1
@@ -34,10 +34,9 @@ LOG_DIR = 'runs'
 #save weights file per SAVE_EPOCH epoch
 SAVE_EPOCH = 10
 
+USE_ZFNET = 1
 
-
-
-
+CPU_ONLY = 1
 
 
 

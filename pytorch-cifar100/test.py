@@ -44,7 +44,11 @@ if __name__ == '__main__':
         shuffle=args.s
     )
 
-    net.load_state_dict(torch.load(args.weights), args.gpu)
+    if settings.CPU_ONLY == 1:
+        net.load_state_dict(torch.load(args.weights, map_location='cpu'), args.gpu)
+    else:
+        net.load_state_dict(torch.load(args.weights), args.gpu)
+
     print(net)
     net.eval()
 
@@ -54,8 +58,10 @@ if __name__ == '__main__':
 
     for n_iter, (image, label) in enumerate(cifar100_test_loader):
         print("iteration: {}\ttotal {} iterations".format(n_iter + 1, len(cifar100_test_loader)))
-        image = Variable(image).cuda()
-        label = Variable(label).cuda()
+
+        if settings.CPU_ONLY != 1:
+            image = Variable(image).cuda()
+            label = Variable(label).cuda()
         output = net(image)
         _, pred = output.topk(5, 1, largest=True, sorted=True)
 

@@ -37,8 +37,7 @@ def train(epoch):
         images = Variable(images)
         labels = Variable(labels)
 
-        CPU_ONLY = 1
-        if CPU_ONLY != 1:
+        if settings.CPU_ONLY != 1:
             labels = labels.cuda()
             images = images.cuda()
 
@@ -82,8 +81,7 @@ def eval_training(epoch):
     for (images, labels) in cifar100_test_loader:
         images = Variable(images)
         labels = Variable(labels)
-        CPU_ONLY = 1
-        if CPU_ONLY != 1:
+        if settings.CPU_ONLY != 1:
             images = images.cuda()
             labels = labels.cuda()
 
@@ -117,8 +115,7 @@ if __name__ == '__main__':
     parser.add_argument('-lr', type=float, default=0.1, help='initial learning rate')
     args = parser.parse_args()
 
-    CPU_ONLY = 1
-    if CPU_ONLY:
+    if settings.CPU_ONLY:
         net = get_network(args)
     else: 
         net = get_network(args, use_gpu=args.gpu)
@@ -152,8 +149,8 @@ if __name__ == '__main__':
         os.mkdir(settings.LOG_DIR)
     writer = SummaryWriter(log_dir=os.path.join(
             settings.LOG_DIR, args.net, settings.TIME_NOW))
-    CPU_ONLY = 1
-    if CPU_ONLY != 1:
+
+    if settings.CPU_ONLY != 1:
         input_tensor = torch.Tensor(12, 3, 32, 32).cuda()
     else:
         input_tensor = torch.Tensor(12, 3, 32, 32)
