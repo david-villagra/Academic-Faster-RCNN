@@ -62,7 +62,7 @@ CIFAR100_TEST_STD = (0.20483289760348583, 0.21610958605664488, 0.209649891067538
 CHECKPOINT_PATH = 'checkpoint'
 
 #total training epoches
-EPOCH = 20 #30
+EPOCH = 20
 MILESTONES = list((np.array(range(6))+1)*5)
 
 #initial learning rate
@@ -90,7 +90,6 @@ OPTIM = 'sgd'
 LOSS = 'cel'  # cross entropy loss
 
 LR_FCT = 'scheduler'
-
 
 
 LRDECAY = 0.4
