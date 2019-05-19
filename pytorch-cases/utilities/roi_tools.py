@@ -68,30 +68,36 @@ def checkOverlap(anchor, origIm, dist):
     right = origIm.right
     xOrig = origIm.X
     yOrig = origIm.Y  # yUp + (yDown-yUp)/2
-
+    print(xOrig)
+    print(anchor.X)
     x1 = anchor.left
     x2 = anchor.right
     y1 = anchor.top
     y2 = anchor.bottom
 
-    x = x1 + (x1-x2)/2
-    y = y1 + (y1-y2)/2
+    x = anchor.X # center of the anchor
+    y = anchor.Y # center of the anchor
     r = Rectangle(x1, y1, x2, y2)
     label = []
     weight = []
     for i in range(len(xOrig)):
         rOrig = Rectangle(left[i], top[i], right[i], bottom[i])
-        if abs(xOrig[i]-x) <= dist and abs(yOrig[i]-y) <= dist:
+        print(abs(xOrig[i]-x))
+        print(abs(yOrig[i] - y))
+        print(dist)
+        if (abs(xOrig[i]-x) <= dist) and (abs(yOrig[i]-y) <= dist):
+            print("Test1")
             if (area(r, r)/area(rOrig, rOrig) >= 1-w2) and (area(r, r)/area(rOrig, rOrig) <= 1+w2):
-                weight.append(np.abs(area(r, r)/area(rOrig, rOrig)-1))
+                weight.append(np.abs(area(r, r)/area(rOrig, rOrig)-w2))
                 label.append(settings.RELABEL(labOrig[i]))
+                print("Test2")
         else:
             label.append("background")
-
-    bestlabel = ""
+    # print(str(label))
+    bestlabel = "background"
     bestw = 1
     for i in range(len(weight)):
-        if weight[i] < bestw:
+        if (weight[i]) < bestw:
             bestw = weight[i]
             bestlabel = label[i]
     return bestlabel
@@ -103,14 +109,14 @@ def getAnchors(imdb, ratios, is_fix, stride):
         shape = imdb.image.shape
         print(str(shape))
     anchdb = Image()
-
+    k = 0
     for r in ratios:
         cntr = r/2.0  # just for rectangular anchors
         wid = r/2.0
-        for ix in range(np.int8(np.floor((shape[0]-r)/stride))):
-            for iy in range(np.int8(np.floor((shape[1]-r)/stride))):
-                cX = cntr+ix*r
-                cY = cntr+iy*r
+        for ix in range(np.int(np.floor((shape[0]-r)/stride))):
+            for iy in range(np.int(np.floor((shape[1]-r)/stride))):
+                cX = cntr+ix*stride
+                cY = cntr+iy*stride
                 np.append(anchdb.X, cX)
                 np.append(anchdb.Y, cY)
                 np.append(anchdb.left, cX-cntr)
@@ -118,26 +124,28 @@ def getAnchors(imdb, ratios, is_fix, stride):
                 np.append(anchdb.right, cX+cntr)
                 np.append(anchdb.bottom, cY+cntr)
                 img_temp = imdb.image
-                print(np.shape(img_temp))
+                #print(np.shape(img_temp))
                 # print(str(ix) + ' ' + str(iy))
                 # print(wid)
-                print(np.int8(cntr-(ix+1)*wid))
-                print(np.int8(cntr+(ix+1)*wid))
-                print(np.int8(cntr-(iy+1)*wid))
-                print(np.int8(cntr+(iy+1)*wid))
-                img_temp = img_temp[np.int8(cntr-(ix+1)*wid):np.int8(cntr+(ix+1)*wid),np.int8(cntr-(iy+1)*wid):np.int8(cntr+(iy+1)*wid),:3]
-                #imp_temp = imp_temp[:-1][:-1][:-1]
+                #print(np.int(cX-cntr))
+                #print(np.int(cX+cntr))
+                #print(np.int(cY-cntr))
+                #print(np.int(cY+cntr))
+                img_temp = img_temp[np.int(cX-cntr):np.int(cX+cntr),np.int(cY-cntr):np.int(cY+cntr),:3]
                 print(img_temp.shape)
                 # roi_matrix = np.transpose(np.array([0, r, 0, r]))
                 anchdb.image = RoI_pooling(img_temp, 32, 32)
                 print(anchdb.image.size)
                 label = checkOverlap(anchdb, imdb, dist=cntr)  #################### to change
                 anchdb.label.append(label)
+                print("Label "+label)
                 np.append(anchdb.numLabel, settings.CIFARLABELS_TO_NUM[label])
-                plt.interactive(False)
-                plt.imshow(img_temp)
-                plt.title(label)
-                plt.show()
+                if label is not "background":                #plt.interactive(False)
+                    plt.imshow(img_temp)
+                    plt.title(label)
+                    plt.draw()
+                    plt.savefig("testanchor"+str(k)+".jpg")
+                    k = k+1
     return anchdb
 
 

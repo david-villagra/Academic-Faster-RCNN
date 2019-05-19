@@ -24,7 +24,7 @@ if __name__ == '__main__':
     imscale_is_fix = True
     ratios = [32, 64, 96]
     stride = 16
-    for i in range(1):
+    for i in range(10):
         imdb = loadkitti(im_files[i], lbl_files[i]) # imdb contains imdb, lbls, positions
 
         anchdb = getAnchors(imdb, ratios, imscale_is_fix, stride) # all anchX, anchY, cropped Image, label, numlabel

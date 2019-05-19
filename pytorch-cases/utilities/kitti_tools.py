@@ -94,8 +94,8 @@ def loadkitti(im_path, lbl_path=None):
     # np.append(imdb.bottom, labels['2d_bbox_bottom'])
     # np.append(imdb.numLabel, lbl_to_num(settings.CIFARLABELS_TO_NUM, labels['type']))
     imdb.label = labels['type']
-    imdb.X = labels['2d_bbox_right']-labels['2d_bbox_left']
-    imdb.Y = labels['2d_bbox_bottom'] - labels['2d_bbox_top']
+    imdb.X = (labels['2d_bbox_right']+labels['2d_bbox_left'])/2
+    imdb.Y = (labels['2d_bbox_bottom']+labels['2d_bbox_top'])/2
     imdb.left = labels['2d_bbox_left']
     imdb.top = labels['2d_bbox_top']
     imdb.right = labels['2d_bbox_right']

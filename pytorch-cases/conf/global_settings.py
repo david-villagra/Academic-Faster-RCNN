@@ -46,6 +46,7 @@ CIFARLABELS = ["aquatic mammals", "fish",
                    "background",
                    "misc"]
 CIFARLABELS_TO_NUM = dict((name, index) for index,name in enumerate(CIFARLABELS))
+NUM_TO_CIFARLABELS = dict((index, name) for index,name in enumerate(CIFARLABELS))
 IMG_SCALE = (1242, 375)
 GTOVERLAP_CNTR_THRES = 0.5
 GTOVERLAP_AREA_THRES = 0.5
