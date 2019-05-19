@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 class Image:
     image = np.array([])
-    label = np.array([])
+    label = []
     X = np.array([])
     Y = np.array([])
     top = np.array([])

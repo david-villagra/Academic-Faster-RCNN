@@ -348,7 +348,7 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_cycl = test_cyclicLearning()  # or fixed rate
+    # res_cycl = test_cyclicLearning()  # or fixed rate
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
@@ -376,7 +376,7 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    # res_mil3 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/4)))+1)*4), 0.5)
+    res_mil3 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/4)))+1)*4), 0.4)
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
