@@ -1,9 +1,10 @@
 import torch
 # from torch.utils.data import Dataset, Dataloader
 import numpy as np
-from config import cfg
+from conf import settings
 from collections import namedtuple
 from utils.kitti_tools import Image
+import matplotlib.pyplot as plt
 
 
 def area(a, b):  # returns None if rectangles don't intersect
@@ -44,8 +45,8 @@ def RoI_pooling(feature_map, H = 32, W = 32):
 
 def checkOverlap(anchor, origIm, dist):
     Rectangle = namedtuple('Rectangle', 'xmin ymin xmax ymax')
-    w1 = cfg.GTOVERLAP_CORE_THRES
-    w2 = cfg.GTOVERLAP_AREA_THRES
+    w1 = settings.GTOVERLAP_CORE_THRES
+    w2 = settings.GTOVERLAP_AREA_THRES
     dist = dist*w1
     #xOrig = origIm['posX']
     #yOrig = origIm['posY']
@@ -70,7 +71,7 @@ def checkOverlap(anchor, origIm, dist):
         rOrig = Rectangle(left[i], top[i], right[i], bottom[i])
         if abs(xOrig[i]-x) <= dist and abs(yOrig[i]-y) <= dist:
             if (area(r, r)/area(rOrig, rOrig) >= 1-w2) and (area(r, r)/area(rOrig, rOrig) <= 1+w2):
-                label = cfg.RELABEL(labOrig[i])
+                label = settings.RELABEL(labOrig[i])
         else:
             label = "background"
 
@@ -102,7 +103,11 @@ def getAnchors(imdb, ratios, is_fix, stride):
                     np.vstack(anchdb.image, RoI_pooling(img_temp, 32, 32))
                     label = checkOverlap(anchdb, img, dist=cntr)  #################### to change
                     np.append(anchdb.label, label)
-                    np.append(anchdb.numlabel, cfg.CIFARLABELS_TO_NUM(label))
+                    np.append(anchdb.numlabel, settings.CIFARLABELS_TO_NUM(label))
+                    plt.interactive(False)
+                    plt.imshow(img_temp)
+                    plt.title(label)
+                    plt.show()
     return anchdb
 
 

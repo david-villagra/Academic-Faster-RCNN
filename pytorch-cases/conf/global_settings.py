@@ -8,9 +8,9 @@ import numpy as np
 
 currentDirectory = os.getcwd()
 
-IMDB_PATH = '/home/tobias/PycharmProjects/FasterRCNN/venv/images/training'  # Kitti data
-LABEL_PATH = '/home/tobias/PycharmProjects/FasterRCNN/venv/label'           # Kitti labels
-TEST_PATH = '/home/tobias/PycharmProjects/FasterRCNN/venv/images/testing'   # Kitti test
+IMDB_PATH = '/home/tobias/PycharmProjects/Data/images/training'  # Kitti data
+LABEL_PATH = '/home/tobias/PycharmProjects/Data/label'           # Kitti labels
+TEST_PATH = '/home/tobias/PycharmProjects/Data/images/testing'   # Kitti test
 USE_ZERO_MEAN_INPUT_NORMALIZATION = True
 KITTILABELS = ["car", "cyclist", "dontcare", "misc", "pedestrian", "person_sitting", "train", "truck", "van"]
 RELABEL = {

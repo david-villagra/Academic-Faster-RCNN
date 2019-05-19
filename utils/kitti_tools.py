@@ -2,7 +2,7 @@ import os
 import numpy as np
 import torch
 # from torch import Dataset, Dataloader
-from config import cfg
+from conf import settings
 # from scipy import misc
 import glob
 import matplotlib.pyplot as plt
@@ -29,7 +29,7 @@ class Image:
 
 
 def preprocess_image(image):
-    if cfg.USE_ZERO_MEAN_INPUT_NORMALIZATION is True:
+    if settings.USE_ZERO_MEAN_INPUT_NORMALIZATION is True:
         image = (image / 255.0 * 2.0 - 1.0)
     else:
         image /= 255.0
@@ -37,20 +37,20 @@ def preprocess_image(image):
 
 
 def read_annotation_file(filename,tp):
-    with open(cfg.LABLE_PATH + '/' + filename) as f:
+    with open(settings.LABLE_PATH + '/' + filename) as f:
         content = f.readlines()
     content = [x.strip().split(' ') for x in content]
     # anno = np.array([])
     anno = {}
     if tp == 'type':
-        anno['type'] = np.array([cfg.RELABEL[x[0].lower()] for x in content])
+        anno['type'] = np.array([settings.RELABEL[x[0].lower()] for x in content])
     elif tp == 'position':
         anno['2d_bbox_left'] = np.array([float(x[4]) for x in content])
         anno['2d_bbox_top'] = np.array([float(x[5]) for x in content])
         anno['2d_bbox_right'] = np.array([float(x[6]) for x in content])
         anno['2d_bbox_bottom'] = np.array([float(x[7]) for x in content])
     elif tp == 'all':
-        anno['type'] = np.array([cfg.RELABEL[x[0].lower()] for x in content])
+        anno['type'] = np.array([settings.RELABEL[x[0].lower()] for x in content])
         anno['2d_bbox_left'] = np.array([float(x[4]) for x in content])
         anno['2d_bbox_top'] = np.array([float(x[5]) for x in content])
         anno['2d_bbox_right'] = np.array([float(x[6]) for x in content])
@@ -89,7 +89,7 @@ def loadkitti(im_path, lbl_path=None):
     # np.append(imdb.top, labels['2d_bbox_top'])
     # np.append(imdb.right, labels['2d_bbox_right'])
     # np.append(imdb.bottom, labels['2d_bbox_bottom'])
-    # np.append(imdb.numLabel, lbl_to_num(cfg.CIFARLABELS_TO_NUM, labels['type']))
+    # np.append(imdb.numLabel, lbl_to_num(settings.CIFARLABELS_TO_NUM, labels['type']))
     imdb.label = labels['type']
     imdb.X = labels['2d_bbox_right']-labels['2d_bbox_left']
     imdb.Y = labels['2d_bbox_bottom'] - labels['2d_bbox_top']
@@ -97,7 +97,12 @@ def loadkitti(im_path, lbl_path=None):
     imdb.top = labels['2d_bbox_top']
     imdb.right = labels['2d_bbox_right']
     imdb.bottom = labels['2d_bbox_bottom']
-    imdb.numLabel = lbl_to_num(cfg.CIFARLABELS_TO_NUM, labels['type'])
+    imdb.numLabel = lbl_to_num(settings.CIFARLABELS_TO_NUM, labels['type'])
+    print(images)
+    plt.interactive(False)
+    plt.imshow(images)
+    plt.title(label)
+    plt.show()
     return imdb
 
 
