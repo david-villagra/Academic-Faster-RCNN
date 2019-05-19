@@ -228,7 +228,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-net', type=str, default='zfnet', help='net type')
     parser.add_argument('-w', type=int, default=2, help='number of workers for dataloader')
-    parser.add_argument('-b', type=int, default=50, help='batch size for dataloader')
+    parser.add_argument('-b', type=int, default=25, help='batch size for dataloader')
     parser.add_argument('-base_lr', type=float, default=1e-7, help='min learning rate')
     parser.add_argument('-max_lr', type=float, default=10, help='max learning rate')
     parser.add_argument('-num_iter', type=int, default=settings.EPOCH, help='num of iteration')
@@ -261,56 +261,57 @@ if __name__ == '__main__':
     #problems = []
     #try:
     #    cnt_error = cnt_error+1
-    res_sgd = test_base_setting() # equal to test_ReLU
+    ##  #   res_sgd = test_base_setting() # equal to test_ReLU#  #We already performed this test 
     #    cnt_working = cnt_working +1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_sgd = test_SGD()
+    # res_sgd = test_SGD() # redundant to the first case
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_adam =test_Adam()
+    # res_adam =test_Adam()  # uncommented because it performed already
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_smoothl1 = test_SmoothL1()
+    # res_smoothl1 = test_SmoothL1() # doesnot work for some reason
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_crossentr = test_crossentropyLoss()
+    # res_crossentr = test_crossentropyLoss()  #redundant to base case
+
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_MLML = test_MultiLabelMarginLoss()
+    # res_MLML = test_MultiLabelMarginLoss() # removed to reduce test amount
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_batch1 = test_batchisze(32)
+    # res_batch1 = test_batchsize(32)   # removed to reduce test amount (wo don't havea high range for testing batch sizes
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_batch1 = test_batchisze(64)
+    # res_batch1 = test_batchsize(64)  # removed since it will kill the run
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
@@ -345,14 +346,14 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_mil3 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/4)))+1)*4), 0.5)
+    # res_mil3 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/4)))+1)*4), 0.5)  # removed to reduce test amount
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_mil4 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/8))) + 1) * 8), 0.5)
+    # res_mil4 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/8))) + 1) * 8), 0.5)  # reduced to reduce test amount
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
@@ -366,7 +367,7 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_datsh = test_noDataShuffle()
+    # res_datsh = test_noDataShuffle()  #removed to reduce test amount
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)

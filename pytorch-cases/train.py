@@ -147,10 +147,11 @@ def train_net(args):
 
     iter_per_epoch = len(cifar100_training_loader)
     warmup_scheduler = WarmUpLR(optimizer, iter_per_epoch * args.warm)
-    checkpoint_path = os.path.join(settings.CHECKPOINT_PATH, args.net, settings.TIME_NOW)
+    checkpoint_path = os.path.join(settings.CHECKPOINT_PATH+'/'+args.testname, args.net, settings.TIME_NOW)
 
     #use tensorboard
-    if not os.path.exists(args.output + '/log'):
+    args.output = args.output + '/' + args.testname
+    if not os.path.exists(args.output+'/log'):
         os.makedirs(args.output + '/log')
     #writer = SummaryWriter(log_dir=os.path.join(
     #        settings.LOG_DIR, args.net, settings.TIME_NOW))
