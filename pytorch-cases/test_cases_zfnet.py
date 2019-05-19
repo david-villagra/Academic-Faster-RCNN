@@ -49,6 +49,7 @@ def test_base_setting():
     arg_base.testname = 'base'
     results = train_net(arg_base)
     save_results(arg_base, results=results)
+    arg_base.testname = ''
     return results
 
 
@@ -58,6 +59,8 @@ def test_SGD():  ############################################ DONE #############
     arg_sgd.testname = 'sgd'
     results = train_net(arg_sgd)
     save_results(arg_sgd, results)
+    arg_sgd.optim = 'sgd'
+    arg_sgd.testname = ''
     return results
 
 
@@ -67,6 +70,8 @@ def test_Adam():  ############################################ DONE ############
     arg_adam.testname = 'adam'
     results = train_net(arg_adam)
     save_results(arg_adam, results)
+    arg_adam.optim = 'sgd'
+    arg_adam.testname = ''
     return results
 
 
@@ -78,6 +83,9 @@ def test_LeakyReLU():  ############################################ DONE #######
     arg_lrelu.testname = 'lrelu'
     results = train_net(arg_lrelu)
     save_results(arg_lrelu, results)
+    arg_lrelu.act = 'relu'
+    settings.ACT = 'relu'
+    arg_lrelu.testname = ''
     return results
 
 
@@ -90,13 +98,13 @@ def test_ReLU():  ############################################ DONE ############
     return results
 
 # LOSS
-def test_SmoothL1():   ############################################ DONE ######################
-    arg_smoothl1 = args
-    arg_smoothl1.loss = 'smoothl1'
-    arg_smoothl1.testname = 'smoothl1'
-    results = train_net(arg_smoothl1)
-    save_results(arg_smoothl1, results)
-    return results
+# def test_SmoothL1():   ############################################ DONE ######################
+#     arg_smoothl1 = args
+#     arg_smoothl1.loss = 'smoothl1'
+#     arg_smoothl1.testname = 'smoothl1'
+#     results = train_net(arg_smoothl1)
+#     save_results(arg_smoothl1, results)
+#     return results
 
 
 def test_crossentropyLoss():  ############################################ DONE ######################
@@ -114,6 +122,8 @@ def test_MultiLabelMarginLoss():  ############################################ D
     arg_MLML.testname = 'mlml'
     results = train_net(arg_MLML)
     save_results(arg_MLML, results)
+    arg_MLML.loss = 'cel'
+    arg_MLML.testname = ''
     return results
 
 
@@ -124,6 +134,8 @@ def test_batchisze(size):   ############################################ DONE ##
     arg_batch.testname = 'batch'+str(size)
     results = train_net(arg_batch)
     save_results(arg_batch, results)
+    arg_batch.b = 100
+    arg_batch.testname = ''
     return results
 
 
@@ -136,6 +148,8 @@ def test_scales(scales):   ############################################ DONE ###
     arg_scale.testname = 'scales'+ string
     results = train_net(arg_scale)
     save_results(arg_scale, results)
+    arg_scale.scales = settings.SCALE
+    arg_scale.testname = ''
     return results
 
 
@@ -145,6 +159,8 @@ def test_nms(): #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NOT DONE
     arg_nms.testname = 'nms'
     results = train_net(arg_nms)
     save_results(arg_nms, results)
+    arg_nms.nms = False
+    arg_nms.testname = ''
     return results
 
 
@@ -155,6 +171,8 @@ def test_cyclicLearning():    ############################################ DONE 
     arg_cyc.testname = 'cyclic'
     results = train_net(arg_cyc)
     save_results(arg_cyc, results)
+    arg_cyc.lr_fct = 'MSscheduler'
+    arg_cyc.testname = ''
     return results
 
 
@@ -173,6 +191,8 @@ def test_decay(value):    ############################################ DONE ####
     arg_dec.testname = 'decay' +str(value)
     results = train_net(arg_dec)
     save_results(arg_dec, results)
+    arg_dec.decay = settings.LRDECAY
+    arg_dec.testname = ''
     return results
 
 
@@ -185,6 +205,9 @@ def test_milestone(list,decay):   ############################################ D
     arg_mil.testname = 'milestone_' +str(string)  + '_decay_' +str(decay)
     results = train_net(arg_mil)
     save_results(arg_mil, results)
+    arg_mil.mil = settings.MILESTONES
+    arg_mil.decay = settings.LRDECAY
+    arg_mil.testname = ''
     return results
 
 
@@ -194,6 +217,8 @@ def test_pixelShuffle():  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! not done ye
     arg_ps.testname = 'pixelshuffle'
     results = train_net(arg_ps)
     save_results(arg_ps, results)
+    arg_ps.pix_sh = False
+    arg_ps.testname = ''
     return results
 
 
@@ -203,6 +228,8 @@ def test_pixelNoise():
     arg_pns.testname = 'pixelNoise'
     results = train_net(arg_pns)
     save_results(arg_pns, results)
+    arg_pns.pix_ns = False
+    arg_pns.testname = ''
     return results
 
 
@@ -212,6 +239,8 @@ def test_noDataShuffle(): ############################################ DONE ####
     arg_ds.testname = 'nodatashuffle'
     results = train_net(arg_ds)
     save_results(arg_ds, results)
+    arg_ds.data_sh = True
+    arg_ds.testname = ''
     return results
 
 
@@ -221,6 +250,8 @@ def test_weightdecay(value):  ############################################ DONE 
     arg_wd.testname = 'weightdecay'
     results = train_net(arg_wd)
     save_results(arg_wd, results)
+    arg_wd.wdecay = settings.WDECAY
+    arg_wd.testname = ''
     return results
 
 
@@ -261,7 +292,7 @@ if __name__ == '__main__':
     #problems = []
     #try:
     #    cnt_error = cnt_error+1
-    res_sgd = test_base_setting() # equal to test_ReLU#  #We already performed this test 
+    #                       res_sgd = test_base_setting() # equal to test_ReLU#  #We already performed this test
     #    cnt_working = cnt_working +1
     #except OSError:
     #    problems.append(cnt_error)
@@ -275,7 +306,7 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_adam =test_Adam()  # uncommented because it performed already
+    #                   res_adam =test_Adam()  # uncommented because it performed already
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)

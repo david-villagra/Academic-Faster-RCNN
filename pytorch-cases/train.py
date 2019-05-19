@@ -136,7 +136,7 @@ def train_net(args):
     if args.optim is 'sgd':
         optimizer = optim.SGD(net.parameters(), lr=args.lr_init, momentum=0.9, weight_decay=args.wdecay)
     elif args.optim is 'adam':
-        optimizer = optim.Adam(net.parameters(), lr=args.lr_init, weight_decay=args.wdecay)
+        optimizer = optim.Adam(net.parameters(), lr=args.lr_init/100, weight_decay=args.wdecay)
 
     if args.lr_fct is 'MSscheduler':
         train_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=args.mil, gamma=0.2) #learning rate decay
