@@ -139,7 +139,7 @@ def train_net(args):
         optimizer = optim.Adam(net.parameters(), lr=args.lr_init/100, weight_decay=args.wdecay)
 
     if args.lr_fct is 'MSscheduler':
-        train_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=args.mil, gamma=0.2) #learning rate decay
+        train_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=args.mil, gamma=args.decay) #learning rate decay
     elif args.lr_fct is 'cyclic':
         optimizer = optim.SGD(net.parameters(), lr=args.lr_init, weight_decay=args.wdecay)
         train_scheduler = optim.lr_scheduler.CyclicLR(optimizer, base_lr=args.base_lr, max_lr=args.max_lr,
