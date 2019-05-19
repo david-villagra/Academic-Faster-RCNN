@@ -177,10 +177,12 @@ def train_net(args):
             train_scheduler.step(epoch)
 
         train(epoch, args, net, cifar100_training_loader, warmup_scheduler, loss_function, optimizer)
-        acc_temp, loss_temp, test_loss_temp = eval_training(epoch, net, cifar100_test_loader, args, loss_function)
+        with torch.no_grad():
+            acc_temp, loss_temp, test_loss_temp = eval_training(epoch, net, cifar100_test_loader, args, loss_function)
         acc.append(acc_temp)
         loss.append(loss_temp)
         test_loss.append(test_loss_temp)
+        torch.cuda.empty_cache()
         #start to save best performance model after learning rate decay to 0.01 
         #if epoch > settings.MILESTONES[1] and best_acc < acc:
 

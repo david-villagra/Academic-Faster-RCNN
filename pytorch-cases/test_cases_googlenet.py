@@ -228,7 +228,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-net', type=str, default='googlenet', help='net type')
     parser.add_argument('-w', type=int, default=2, help='number of workers for dataloader')
-    parser.add_argument('-b', type=int, default=15, help='batch size for dataloader')
+    parser.add_argument('-b', type=int, default=100, help='batch size for dataloader')
     parser.add_argument('-base_lr', type=float, default=1e-7, help='min learning rate')
     parser.add_argument('-max_lr', type=float, default=10, help='max learning rate')
     parser.add_argument('-num_iter', type=int, default=settings.EPOCH, help='num of iteration')
@@ -268,7 +268,7 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_sgd = test_SGD()
+    # res_sgd = test_SGD()
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
@@ -282,35 +282,35 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_smoothl1 = test_SmoothL1()
+    # res_smoothl1 = test_SmoothL1()
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_crossentr = test_crossentropyLoss()
+    # res_crossentr = test_crossentropyLoss()
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_MLML = test_MultiLabelMarginLoss()
+    # res_MLML = test_MultiLabelMarginLoss()
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_batch1 = test_batchisze(32)
+    # res_batch1 = test_batchisze(32)
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_batch1 = test_batchisze(64)
+    # res_batch1 = test_batchisze(64)
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
@@ -324,7 +324,7 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_LRs = test_LRScheduler() #
+    # res_LRs = test_LRScheduler() #
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
@@ -345,14 +345,14 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_mil3 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/4)))+1)*4), 0.5)
+    # res_mil3 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/4)))+1)*4), 0.5)
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_mil4 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/8))) + 1) * 8), 0.5)
+    # res_mil4 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/8))) + 1) * 8), 0.5)
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
@@ -366,7 +366,7 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    res_datsh = test_noDataShuffle()
+    # res_datsh = test_noDataShuffle()
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)
