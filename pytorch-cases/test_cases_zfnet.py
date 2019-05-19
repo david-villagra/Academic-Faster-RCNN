@@ -35,12 +35,12 @@ def save_results(arguments, results):
         f.write('warm: '+str(arguments.warm)+'\n')
 
         f.write("\n")
-        f.write("acc\n")
-        [f.write("%d " % i) for i in results[0]]
-        f.write("loss\n")
-        [f.write("%d " % i) for i in results[1]]
-        f.write("test_loss\n")
-        [f.write("%d " % i) for i in results[2]]
+        f.write("acc")
+        [f.write("%.5f " % i) for i in results[0]]
+        f.write("\nloss")
+        [f.write("%.5f " % i) for i in results[1]]
+        f.write("\ntest_loss")
+        [f.write("%.5f " % i) for i in results[2]]
 
 
 # OPTIMIZER  ############################################ DONE ######################
@@ -261,7 +261,7 @@ if __name__ == '__main__':
     #problems = []
     #try:
     #    cnt_error = cnt_error+1
-    ##  #   res_sgd = test_base_setting() # equal to test_ReLU#  #We already performed this test 
+    res_sgd = test_base_setting() # equal to test_ReLU#  #We already performed this test 
     #    cnt_working = cnt_working +1
     #except OSError:
     #    problems.append(cnt_error)
@@ -275,7 +275,7 @@ if __name__ == '__main__':
     #    pass
     #try:
     #    cnt_error = cnt_error+1
-    # res_adam =test_Adam()  # uncommented because it performed already
+    res_adam =test_Adam()  # uncommented because it performed already
     #    cnt_working = cnt_working + 1
     #except OSError:
     #    problems.append(cnt_error)

@@ -35,12 +35,12 @@ def save_results(arguments, results):
         f.write('warm: '+str(arguments.warm)+'\n')
 
         f.write("\n")
-        f.write("acc\n")
-        [f.write("%d " % i) for i in results[0]]
-        f.write("loss\n")
-        [f.write("%d " % i) for i in results[1]]
-        f.write("test_loss\n")
-        [f.write("%d " % i) for i in results[2]]
+        f.write("acc")
+        [f.write("%.5f " % i) for i in results[0]]
+        f.write("\nlosn")
+        [f.write("%.5f " % i) for i in results[1]]
+        f.write("\ntest_los ")
+        [f.write("%.5f " % i) for i in results[2]]
 
 
 # OPTIMIZER  ############################################ DONE ######################
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-net', type=str, default='googlenet', help='net type')
     parser.add_argument('-w', type=int, default=2, help='number of workers for dataloader')
-    parser.add_argument('-b', type=int, default=50, help='batch size for dataloader')
+    parser.add_argument('-b', type=int, default=15, help='batch size for dataloader')
     parser.add_argument('-base_lr', type=float, default=1e-7, help='min learning rate')
     parser.add_argument('-max_lr', type=float, default=10, help='max learning rate')
     parser.add_argument('-num_iter', type=int, default=settings.EPOCH, help='num of iteration')
