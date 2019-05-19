@@ -62,18 +62,18 @@ def lbl_to_num(corpus, labels):
 
     digit = np.array([])
     for l in labels:
-        np.append(digit, corpus[l])
+        digit = np.append(digit, corpus[l])
     return digit
 
 
-def loadkitti(im_path, lbl_path=None):
+def loadkitti(im_path, lbl_path=None, num=1):
     # output contains imdb, lbls
 
 
 
     print(im_path)
     if im_path.endswith('.png'):
-        print(plt.imread(im_path))
+        # print(plt.imread(im_path))
         images = preprocess_image(plt.imread(im_path))
 
     if lbl_path is not None:
@@ -84,15 +84,7 @@ def loadkitti(im_path, lbl_path=None):
     # right now we just load one image
     imdb = Image()
     imdb.image = images
-    # np.vstack(imdb.image, images)
-    # np.append(imdb.label, labels['type'])
-    # np.append(imdb.X, labels['2d_bbox_right']-labels['2d_bbox_left'])
-    # np.append(imdb.Y, labels['2d_bbox_bottom'] - labels['2d_bbox_top'])
-    # np.append(imdb.left, labels['2d_bbox_left'])
-    # np.append(imdb.top, labels['2d_bbox_top'])
-    # np.append(imdb.right, labels['2d_bbox_right'])
-    # np.append(imdb.bottom, labels['2d_bbox_bottom'])
-    # np.append(imdb.numLabel, lbl_to_num(settings.CIFARLABELS_TO_NUM, labels['type']))
+
     imdb.label = labels['type']
     imdb.X = (labels['2d_bbox_right']+labels['2d_bbox_left'])/2
     imdb.Y = (labels['2d_bbox_bottom']+labels['2d_bbox_top'])/2
@@ -101,11 +93,12 @@ def loadkitti(im_path, lbl_path=None):
     imdb.right = labels['2d_bbox_right']
     imdb.bottom = labels['2d_bbox_bottom']
     imdb.numLabel = lbl_to_num(settings.CIFARLABELS_TO_NUM, labels['type'])
-    #print(images.size)
-    #plt.interactive(False)
-    #plt.imshow(images)
-    #plt.title(str(imdb.label))
-    #plt.show()
+
+    plt.imshow(images)
+    plt.title(str(imdb.label))
+    plt.draw()
+    plt.savefig("origImage"+str(num)+".jpg")
+
     return imdb
 
 

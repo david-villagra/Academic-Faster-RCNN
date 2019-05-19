@@ -16,14 +16,15 @@ KITTILABELS = ["car", "cyclist", "dontcare", "misc", "pedestrian", "person_sitti
 RELABEL = {
     "car": "vehicles",
     "cyclist": "vehicles",
-    "dontcare": "background",
+    "dontcare": "misc",
     "misc": "misc",
     "pedestrian": "people",
     "person_sitting": "people",
     "train": "vehicles",
     "truck": "vehicles",
     "tram": "vehicles",
-    "van": "vehicles"
+    "van": "vehicles",
+    "background": "background"
 }
 CIFARLABELS = ["aquatic mammals", "fish",
                    "flowers",
@@ -48,8 +49,8 @@ CIFARLABELS = ["aquatic mammals", "fish",
 CIFARLABELS_TO_NUM = dict((name, index) for index,name in enumerate(CIFARLABELS))
 NUM_TO_CIFARLABELS = dict((index, name) for index,name in enumerate(CIFARLABELS))
 IMG_SCALE = (1242, 375)
-GTOVERLAP_CNTR_THRES = 0.5
-GTOVERLAP_AREA_THRES = 0.5
+GTOVERLAP_CNTR_THRES = 1
+GTOVERLAP_AREA_THRES = 4
 
 #CIFAR100 dataset path (python version)
 #CIFAR100_PATH = '/nfs/private/cifar100/cifar-100-python'

@@ -11,6 +11,8 @@ import os
 if __name__ == '__main__':
     im_files = os.listdir(settings.IMDB_PATH)
     lbl_files = os.listdir(settings.LABEL_PATH)
+    im_files = list(np.unique(np.array(im_files)))
+    lbl_files = list(np.unique(np.array(lbl_files)))
 
     for i in range(len(im_files)):
         im_files[i] = settings.IMDB_PATH + '/' + im_files[i]
@@ -22,12 +24,14 @@ if __name__ == '__main__':
     #     goto end
 
     imscale_is_fix = True
-    ratios = [32, 64, 96]
+    ratios = [128, 192]
+
     stride = 16
     for i in range(10):
-        imdb = loadkitti(im_files[i], lbl_files[i]) # imdb contains imdb, lbls, positions
+        imdb = loadkitti(im_files[i], lbl_files[i], i*100)  # imdb contains imdb, lbls, positions
 
-        anchdb = getAnchors(imdb, ratios, imscale_is_fix, stride) # all anchX, anchY, cropped Image, label, numlabel
+        anchdb = getAnchors(imdb, ratios, imscale_is_fix, stride, i) # all anchX, anchY, cropped Image, label, numlabel
+
 
         # evaluation
         # cls_pred = np.array([(), (), (), ()], dtype=[('prediction', 'f8'), ('x', 'f8'), ('y', 'f8'), ('eval', 'i8')])
