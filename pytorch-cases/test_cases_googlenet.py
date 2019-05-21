@@ -322,7 +322,7 @@ if __name__ == '__main__':
     #     res_lrelu = test_LeakyReLU()
     args.num_iter = 20
     args.wdecay = 0.4
-    args.mil = range(19)+1
+    args.mil = range(1, 20)
     gamma = [0.2, 0.4, 0.6, 0.8]
     for g in gamma:
         res = test_decay(g)
@@ -330,11 +330,11 @@ if __name__ == '__main__':
     args.mil = [2, 4, 8, 16]
     res = test_decay(0.75)
 
-    args.mil = range(19)+1
+    args.mil = range(1, 20)
     args.decay = 0.4
     weightdecay = gamma
     for w in weightdecay:
-	res = test_weightdecay(w)
+        res = test_weightdecay(w)
 
     args.decay = 0.4 
     args.wdecay = 0.4
@@ -342,7 +342,7 @@ if __name__ == '__main__':
     args.lr_fct = 'cyclic'
     res = test_cyclicLearning()  
 
-    batch = [20 50 100 200]
+    batch = [20, 50, 100, 200]
     args.lr_fct = "MSscheduler"
     for b in batch:
         res = test_batchsize(b)
