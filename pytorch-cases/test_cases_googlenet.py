@@ -35,11 +35,11 @@ def save_results(arguments, results):
         f.write('warm: '+str(arguments.warm)+'\n')
 
         f.write("\n")
-        f.write("acc")
+        f.write("acc ")
         [f.write("%.5f " % i) for i in results[0]]
-        f.write("\nlosn")
+        f.write("\nloss ")
         [f.write("%.5f " % i) for i in results[1]]
-        f.write("\ntest_los ")
+        f.write("\ntest_loss ")
         [f.write("%.5f " % i) for i in results[2]]
 
 
@@ -261,7 +261,7 @@ if __name__ == '__main__':
     parser.add_argument('-w', type=int, default=2, help='number of workers for dataloader')
     parser.add_argument('-b', type=int, default=100, help='batch size for dataloader')
     parser.add_argument('-base_lr', type=float, default=1e-7, help='min learning rate')
-    parser.add_argument('-max_lr', type=float, default=10, help='max learning rate')
+    parser.add_argument('-max_lr', type=float, default=0.1, help='max learning rate')
     parser.add_argument('-num_iter', type=int, default=settings.EPOCH, help='num of iteration')
     parser.add_argument('-use_gpu', nargs='+', type=bool, default=True, help='gpu device')
     parser.add_argument('-output', type=str, default=settings.OUTDIR, help='output directory')
@@ -287,135 +287,62 @@ if __name__ == '__main__':
     else:
         settings.USE_ZFNET = 0
 
-    #cnt_working = 0
-    #cnt_error = 0
-    #problems = []
-    #try:
-    #    cnt_error = cnt_error+1
-    #                   res_sgd = test_base_setting() # equal to test_ReLU
-    #    cnt_working = cnt_working +1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_sgd = test_SGD()
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    #                   res_adam =test_Adam()
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_smoothl1 = test_SmoothL1()
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_crossentr = test_crossentropyLoss()
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_MLML = test_MultiLabelMarginLoss()
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_batch1 = test_batchisze(32)
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_batch1 = test_batchisze(64)
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_cycl = test_cyclicLearning()  # or fixed rate
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_LRs = test_LRScheduler() #
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    res_mil1 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/2)))+1)*2),0.8)
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    ##    cnt_error = cnt_error+1
-    res_mil2 = test_milestone(list((np.array(range(np.int8(settings.EPOCH / 2))) + 1) * 2), 0.4)
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    res_mil3 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/4)))+1)*4), 0.4)
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_mil4 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/8))) + 1) * 8), 0.5)
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    res_pixns = test_pixelNoise()
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    #try:
-    #    cnt_error = cnt_error+1
-    # res_datsh = test_noDataShuffle()
-    #    cnt_working = cnt_working + 1
-    #except OSError:
-    #    problems.append(cnt_error)
-    #    pass
-    # try:
-    #     cnt_error = cnt_error+1
-    #     res_lrelu = test_LeakyReLU()
-    #     cnt_working = cnt_working + 1
-    # except OSError:
-    #     problems.append(cnt_error)
-    #     pass
+    #     res_sgd = test_base_setting() # equal to test_ReLU#  #We already performed this test
 
-    # print("tests finished: " + str(cnt_working))
-    # print("Problems: " + str(problems))
-    # args.testname = 'error_report'
-    # try:
-    #     os.makedirs(args.output)
-    # except OSError:
-    #     pass
-    # with open(args.output + args.testname + '.txt', 'w+') as f:
-    #     f.write('tests finished (of 17): '+str(cnt_working)+'\n')
+    # res_sgd = test_SGD() # redundant to the first case
+
+    #     res_adam =test_Adam()  # uncommented because it performed already
+
+    # res_smoothl1 = test_SmoothL1() # doesnot work for some reason
+
+    # res_crossentr = test_crossentropyLoss()  #redundant to base case
+
+    # res_MLML = test_MultiLabelMarginLoss() # removed to reduce test amount
+
+    # res_batch1 = test_batchsize(32)   # removed to reduce test amount (wo don't havea high range for testing batch sizes
+
+    # res_batch1 = test_batchsize(64)  # removed since it will kill the run
+
+    #     res_cycl = test_cyclicLearning()  # or fixed rate
+
+    # res_LRs = test_LRScheduler() #
+
+    #     res_mil1 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/2)))+1)*2),0.8)
+    
+    #     res_mil2 = test_milestone(list((np.array(range(np.int8(settings.EPOCH / 2))) + 1) * 2), 0.4)
+   
+    #     res_mil3 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/4)))+1)*4), 0.4)  # removed to reduce test amount
+   
+    # res_mil4 = test_milestone(list((np.array(range(np.int8(settings.EPOCH/8))) + 1) * 8), 0.5)  # reduced to reduce test amount
+    
+    # res_pixns = test_pixelNoise()
+    
+    # res_datsh = test_noDataShuffle()  #removed to reduce test amount
+    
+    #     res_lrelu = test_LeakyReLU()
+    args.num_iter = 20
+    args.wdecay = 0.4
+    args.mil = range(19)+1
+    gamma = [0.2, 0.4, 0.6, 0.8]
+    for g in gamma:
+        res = test_decay(g)
+
+    args.mil = [2, 4, 8, 16]
+    res = test_decay(0.75)
+
+    args.mil = range(19)+1
+    args.decay = 0.4
+    weightdecay = gamma
+    for w in weightdecay:
+	res = test_weightdecay(w)
+
+    args.decay = 0.4 
+    args.wdecay = 0.4
+    args.num_iter = 40
+    args.lr_fct = 'cyclic'
+    res = test_cyclicLearning()  
+
+    batch = [20 50 100 200]
+    args.lr_fct = "MSscheduler"
+    for b in batch:
+        res = test_batchsize(b)
