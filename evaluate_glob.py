@@ -18,11 +18,18 @@ if __name__ == '__main__':
         im_files[i] = settings.IMDB_PATH + '/' + im_files[i]
         lbl_files[i] = settings.LABEL_PATH + '/' + lbl_files[i]
 
-    imscale_is_fix = True
-    ratios = [128, 192]
+    #  print(im_files)
+    # if not len(im_files) is len(lbl_files):
+    #     print("There is something wrong with the amount of image / label files")
+    #     goto end
 
-    stride = 16
-    for i in range(10):
+    imscale_is_fix = True
+    ratios = [100, 150]
+
+
+    stride = 12
+
+    for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
         imdb = loadkitti(im_files[i], lbl_files[i], i*100)  # imdb contains imdb, lbls, positions
 
         anchdb = getAnchors(imdb, ratios, imscale_is_fix, stride, i) # all anchX, anchY, cropped Image, label, numlabel

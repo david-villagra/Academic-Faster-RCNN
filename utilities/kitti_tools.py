@@ -40,6 +40,7 @@ def read_annotation_file(filename,tp):
     with open(filename) as f:
         content = f.readlines()
     content = [x.strip().split(' ') for x in content]
+    # anno = np.array([])
     anno = {}
     if tp == 'type':
         anno['type'] = np.array([settings.RELABEL[x[0].lower()] for x in content])
