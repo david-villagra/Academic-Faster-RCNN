@@ -13,7 +13,7 @@ from torch.autograd import Variable
 from conf import settings
 from utils import get_network, get_test_dataloader
 from conf import settings
-
+from utilities.cifar_tools import randomBackground
 from scipy.ndimage import imread as jpg_to_numpy 
 from scipy.special import softmax
 import matplotlib.pyplot as plt
@@ -27,7 +27,11 @@ def test_one(args, name_img):
         net.load_state_dict(torch.load(args.path_pth), gpu = args.use_gpu)
     #print(net)
     net.eval()
-    image = jpg_to_numpy(args.path_img)
+    if settings.TEST_WITH_RANDOM_BACKGROUND is False:
+        image = jpg_to_numpy(args.path_img)
+    else:
+        image = np.reshape(randomBackground(),(32,32,3))
+    print(np.shape(image))
     img_PIL = Image.fromarray(image)
     #print(np.shape(image))
     #image = Image.open(args.path_img)

@@ -49,6 +49,7 @@ GTOVERLAP_CNTR_THRES = 1
 GTOVERLAP_AREA_THRES = 4
 
 RoI_POOL_2 = 0
+TEST_WITH_RANDOM_BACKGROUND = False
 
 #CIFAR100 dataset path (python version)
 #CIFAR100_PATH = '/nfs/private/cifar100/cifar-100-python'

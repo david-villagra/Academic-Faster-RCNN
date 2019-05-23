@@ -6,7 +6,10 @@ import numpy as np
 
 if __name__ == '__main__':
 
-    name_img = 'testanchor1024'
+    if settings.TEST_WITH_RANDOM_BACKGROUND is False:
+        name_img = 'testanchor1024'
+    else:
+        name_img = 'background_test4'
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
     parser = argparse.ArgumentParser()
