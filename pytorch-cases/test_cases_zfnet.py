@@ -321,19 +321,19 @@ if __name__ == '__main__':
     # res_datsh = test_noDataShuffle()  #removed to reduce test amount
     
     #     res_lrelu = test_LeakyReLU()
-    args.num_iter = 20
-    args.wdecay = 0.4
-    args.mil = range(1, 20)
-    gamma = [0.2, 0.4, 0.6, 0.8]
-    for g in gamma:
-        res = test_decay(g)
+    #args.num_iter = 20
+    #args.wdecay = 0.4
+    #args.mil = range(1, 20)
+    #gamma = [0.4, 0.6, 0.8]
+    #for g in gamma:
+    #    res = test_decay(g)
 
     args.mil = [2, 4, 8, 16]
-    res = test_decay(0.75)
+    res = test_decay(0.5)
 
     args.mil = range(1, 20)
     args.decay = 0.4
-    weightdecay = gamma
+    weightdecay = [0.2, 0.4, 0.6, 0.8]
     for w in weightdecay:
         res = test_weightdecay(w)
 
