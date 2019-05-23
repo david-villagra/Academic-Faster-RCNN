@@ -52,6 +52,8 @@ IMG_SCALE = (1242, 375)
 GTOVERLAP_CNTR_THRES = 1
 GTOVERLAP_AREA_THRES = 4
 
+RoI_POOL_2 = 0
+
 #CIFAR100 dataset path (python version)
 #CIFAR100_PATH = '/nfs/private/cifar100/cifar-100-python'
 

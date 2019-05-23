@@ -18,11 +18,6 @@ if __name__ == '__main__':
         im_files[i] = settings.IMDB_PATH + '/' + im_files[i]
         lbl_files[i] = settings.LABEL_PATH + '/' + lbl_files[i]
 
-    #  print(im_files)
-    # if not len(im_files) is len(lbl_files):
-    #     print("There is something wrong with the amount of image / label files")
-    #     goto end
-
     imscale_is_fix = True
     ratios = [128, 192]
 

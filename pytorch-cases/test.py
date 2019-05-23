@@ -16,18 +16,6 @@ from conf import settings
 from utils import get_network, get_test_dataloader
 from conf import settings
 
-#if __name__ == '__main__':
-
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument('-net', type=str, required=True, help='net type')
-    # parser.add_argument('-weights', type=str, required=True, help='the weights file you want to test')
-    # parser.add_argument('-gpu', type=bool, default=True, help='use gpu or not')
-    # parser.add_argument('-w', type=int, default=2, help='number of workers for dataloader')
-    # parser.add_argument('-b', type=int, default=16, help='batch size for dataloader')
-    # parser.add_argument('-s', type=bool, default=True, help='whether shuffle the dataset')
-    # parser.add_argument('-output', type=str, default=settings.OUTDIR, help='output directory')
-    # args = parser.parse_args()
-
 
 def test(net='zfnet', weights=settings.WEIGHT_PATH, gpu=True, b=16, s=True, output=settings.DATA_PATH):  #####################
     net = get_network(net=net, weights=weights, use_gpu=gpu, w=2, b=b, s=s, output=output)     #####################

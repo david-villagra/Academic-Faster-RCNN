@@ -1,19 +1,11 @@
-""" helper function
-
-author baiyu
-"""
-
 import sys
-
 import numpy
-
 import torch
 from torch.optim.lr_scheduler import _LRScheduler
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from conf import settings
-#from dataset import CIFAR100Train, CIFAR100Test
 
 
 def get_network(args):

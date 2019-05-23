@@ -16,45 +16,44 @@ def area(a, b):  # returns None if rectangles don't intersect
         return dx * dy
 
 def RoI_pooling(feature_map, H = 32, W = 32):
-    #check = sk.measure.block_reduce(feature_map, (H, W, 3), np.max)
-    check = ndimage.zoom(feature_map, zoom = (W/feature_map.shape[0],H/feature_map.shape[1],1))
-    #print(check.shape)
-    return check
-    # Inputs:
-    # feature_map: matrix nxnx3 (cropped image)
+    if settings.RoI_POOL_2 == 1:
+        #check = sk.measure.block_reduce(feature_map, (H, W, 3), np.max)
+        check = ndimage.zoom(feature_map, zoom = (W/feature_map.shape[0],H/feature_map.shape[1],1))
+        #print(check.shape)
+        return check
 
-    # H and W are the desired dimensions of the output default setting:32x32
-    # RoI_map = np.zeros((feature_map.shape[0], feature_map.shape[1], 3))
-    # RoI_reduced = np.zeros((32, 32, 3))
-    # # Output: A WxHx3 matrix
-    # for i in range(feature_map.shape[2]): # Should be 3 (RGB)
-    #     x1 = 0  # RoI_matrix[i, 1]
-    #     x2 = feature_map.shape[0]  # RoI_matrix[i, 3]
-    #     y1 = 0  # RoI_matrix[i, 2]
-    #     y2 = feature_map.shape[1]  # RoI_matrix[i, 4]
-    #
-    #     w = abs(x1 - x2)
-    #     h = abs(y1 - y2)
-    #     height = h // H
-    #     width = w // W
-    #     #print(w)
-    #     #print(height)
-    #     #print(width)
-    #     for j in range(W) : # Should be n
-    #
-    #         end_w = width * (j)
-    #         # print(end_w)
-    #         if j == (W - 1):
-    #             end_w = w - 1
-    #         for k in range(H) : # Should be n
-    #             end_h = height * (k)
-    #             print(end_h)
-    #             if k == (H - 1):
-    #                 end_h = h - 1
-    #                 #print(end_h)
-    #             RoI_reduced[j, k, i] = np.amax(RoI_map[(j-1) * width:end_w, (k-1) * height:end_h, i])
-    #
-    # return RoI_reduced
+    else:
+        # Inputs:
+        # feature_map: matrix nxnx3 (cropped image)
+
+        # H and W are the desired dimensions of the output default setting:32x32
+        RoI_map = np.zeros((feature_map.shape[0], feature_map.shape[1], 3))
+        RoI_reduced = np.zeros((32, 32, 3))
+        # # Output: A WxHx3 matrix
+        for i in range(feature_map.shape[2]): # Should be 3 (RGB)
+            x1 = 0  # RoI_matrix[i, 1]
+            x2 = feature_map.shape[0]  # RoI_matrix[i, 3]
+            y1 = 0  # RoI_matrix[i, 2]
+            y2 = feature_map.shape[1]  # RoI_matrix[i, 4]
+        
+            w = abs(x1 - x2)
+            h = abs(y1 - y2)
+            height = h // H
+            width = w // W
+            for j in range(W) : # Should be n
+        
+                end_w = width * (j)
+                # print(end_w)
+                if j == (W - 1):
+                    end_w = w - 1
+                for k in range(H) : # Should be n
+                    end_h = height * (k)
+                    print(end_h)
+                    if k == (H - 1):
+                        end_h = h - 1
+                    RoI_reduced[j, k, i] = np.amax(RoI_map[(j-1) * width:end_w, (k-1) * height:end_h, i])
+        
+        return RoI_reduced
 
 
 def checkOverlap(anchor, origIm, dist):
@@ -71,8 +70,6 @@ def checkOverlap(anchor, origIm, dist):
     right = origIm.right
     xOrig = origIm.X
     yOrig = origIm.Y  # yUp + (yDown-yUp)/2
-    #print(xOrig)
-    #print(anchor.X[-1])
     x1 = anchor.left[-1]
     x2 = anchor.right[-1]
     y1 = anchor.top[-1]
@@ -85,9 +82,6 @@ def checkOverlap(anchor, origIm, dist):
     weight = []
     for i in range(len(xOrig)):
         rOrig = Rectangle(left[i], top[i], right[i], bottom[i])
-        #print(abs(xOrig[i]-x))
-        #print(abs(yOrig[i] - y))
-        #print(dist)
         if (abs(xOrig[i]-x) <= dist) and (abs(yOrig[i]-y) <= dist):
             print("Test1")
             if (area(r, r)/area(rOrig, rOrig) >= 1-w2) and (area(r, r)/area(rOrig, rOrig) <= 1+w2):
@@ -122,22 +116,13 @@ def getAnchors(imdb, ratios, is_fix, stride, imgnumber):
                 cX = cntr+ix*stride
                 cY = cntr+iy*stride
                 img_temp = imdb.image
-                #print(np.shape(img_temp))
-                # print(str(ix) + ' ' + str(iy))
-                # print(wid)
-                # print(np.int(cX-cntr))
-                # print(np.int(cX+cntr))
-                # print(np.int(cY-cntr))
-                # print(np.int(cY+cntr))
                 testanch.X = np.append(testanch.X, cX)
-                # print(anchdb.X)
                 testanch.Y = np.append(testanch.Y, cY)
                 testanch.left = np.append(testanch.left, cX-cntr)
                 testanch.top = np.append(testanch.top, cY-cntr)
                 testanch.right = np.append(testanch.right, cX+cntr)
                 testanch.bottom = np.append(testanch.bottom, cY+cntr)
                 img_temp = img_temp[np.int(cX-cntr):np.int(cX+cntr),np.int(cY-cntr):np.int(cY+cntr),:3]
-                # roi_matrix = np.transpose(np.array([0, r, 0, r]))
                 testanch.image = RoI_pooling(img_temp, 32, 32)
                 label = checkOverlap(testanch, imdb, dist=cntr)  #################### to change
                 if label is not "background":
@@ -152,7 +137,6 @@ def getAnchors(imdb, ratios, is_fix, stride, imgnumber):
                     anchdb.label.append(label)
                     anchdb.numLabel = np.append(anchdb.numLabel, settings.CIFARLABELS_TO_NUM[label])
                     anchdb.X = np.append(anchdb.X, cX)
-                    # print(anchdb.X)
                     anchdb.Y = np.append(anchdb.Y, cY)
                     anchdb.left = np.append(anchdb.left, cX-cntr)
                     anchdb.top = np.append(anchdb.top, cY-cntr)
