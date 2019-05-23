@@ -23,7 +23,6 @@ If you want to use GoogLeNet, it is necessary to change the flag USE_ZFNET to 0 
 ## Using GPU
 
 As this branch was used for testing the CNN networks, GPU is disabled by default. For GPU usage to be enabled, change the flag US_GPU to 1 (
-
 <code>
   $ USE_GPU = 1
 </code>
