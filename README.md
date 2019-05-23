@@ -14,3 +14,8 @@ To train a network run the following command in the Linux command window:
 ```
 python3 train.py -net <NETWORK>
 ```
+If you want to use GoogLeNet, it is necessary to change the flag USE_ZFNET to 0 in the Settings file (in Conf folder). 
+
+## Using GPU
+
+As this branch was used for testing the CNN networks, GPU is disabled by default. For GPU usage to be enabled, change the flag US_GPU to 1 in Settings file. 
