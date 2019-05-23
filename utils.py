@@ -1,5 +1,7 @@
 import sys
+
 import numpy
+
 import torch
 from torch.optim.lr_scheduler import _LRScheduler
 import torchvision
@@ -7,26 +9,29 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from conf import settings
 
+#from dataset import CIFAR100Train, CIFAR100Test
 
-def get_network(args):
+def get_network(args, use_gpu=True):
     """ return given network
     """
-    if args.net is 'googlenet':
+    if args.net == 'googlenet':
         from models.googlenet import googlenet
         net = googlenet()
-    elif args.net is 'zfnet':
+    elif args.net == 'zfnet':
         from models.zfnet import zfnet
         net = zfnet()
+
     else:
         print('the network name you have entered is not supported yet')
         sys.exit()
-    if args.use_gpu is True:
+    
+    if settings.CPU_ONLY != 1 :
         net = net.cuda()
 
     return net
 
 
-def get_training_dataloader(args, mean, std, batch_size=16, num_workers=2, shuffle=True):
+def get_training_dataloader(mean, std, batch_size=16, num_workers=2, shuffle=True):
     """ return training dataloader
     Args:
         mean: mean of cifar100 training dataset
@@ -37,40 +42,16 @@ def get_training_dataloader(args, mean, std, batch_size=16, num_workers=2, shuff
         shuffle: whether to shuffle 
     Returns: train_data_loader:torch dataloader object
     """
-    if args.net is 'zfnet' and args.pix_ns is True:
+    if settings.USE_ZFNET == 1:
         transform_train = transforms.Compose([
             #transforms.ToPILImage(),
-            #transforms.RandomCrop(32, padding=4),
-            transforms.RandomResizedCrop(224-4-4),
-            transforms.ColorJitter(brightness=0.05, contrast=0.05, saturation=0.05, hue=0.05),
-            transforms.Pad(4),
+            transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
             transforms.RandomRotation(15),
             transforms.ToTensor(),
-            transforms.Normalize(mean, std)
+            transforms.Normalize(mean, std)            
         ])
-    elif (args.net is not 'zfnet') and (args.pix_ns is True):
-        transform_train = transforms.Compose([
-            #transforms.ToPILImage(),
-            transforms.RandomCrop(32, padding=4),
-            transforms.ColorJitter(brightness=0.05, contrast=0.05, saturation=0.05, hue=0.05),
-            transforms.RandomHorizontalFlip(),
-            transforms.RandomRotation(15),
-            transforms.ToTensor(),
-            transforms.Normalize(mean, std)
-        ])
-    elif (args.net is 'zfnet') and (args.pix_ns is False):
-        transform_train = transforms.Compose([
-            #transforms.ToPILImage(),
-            #transforms.RandomCrop(32, padding=4),
-            transforms.RandomResizedCrop(224-4-4),
-            transforms.Pad(4),
-            transforms.RandomHorizontalFlip(),
-            transforms.RandomRotation(15),
-            transforms.ToTensor(),
-            transforms.Normalize(mean, std)
-        ])
-    elif (args.net is not 'zfnet') and (args.pix_ns is False):
+    else:
         transform_train = transforms.Compose([
             #transforms.ToPILImage(),
             transforms.RandomCrop(32, padding=4),
@@ -79,17 +60,15 @@ def get_training_dataloader(args, mean, std, batch_size=16, num_workers=2, shuff
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
         ])
-
     #cifar100_training = CIFAR100Train(path, transform=transform_train)
-    cifar100_training = torchvision.datasets.CIFAR100(root=settings.DATA_PATH, train=True, download=True, transform=transform_train)  #####################################
+    cifar100_training = torchvision.datasets.CIFAR100(root='./data', train=True, download=True, transform=transform_train)
     cifar100_training_loader = DataLoader(
         cifar100_training, shuffle=shuffle, num_workers=num_workers, batch_size=batch_size)
 
     return cifar100_training_loader
 
-
-def get_test_dataloader(args, mean, std, batch_size=16, num_workers=2, shuffle=True):
-    """ return training dataloader
+def get_test_dataloader(mean, std, batch_size=16, num_workers=2, shuffle=True):
+    """ return test dataloader
     Args:
         mean: mean of cifar100 test dataset
         std: std of cifar100 test dataset
@@ -99,27 +78,36 @@ def get_test_dataloader(args, mean, std, batch_size=16, num_workers=2, shuffle=T
         shuffle: whether to shuffle 
     Returns: cifar100_test_loader:torch dataloader object
     """
-    if args.net is 'zfnet':
+    if settings.USE_ZFNET == 1:
         transform_test = transforms.Compose([
-            transforms.RandomResizedCrop(224-4-4),
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
         ])
     else:
         transform_test = transforms.Compose([
-            transforms.RandomCrop(32, padding=4),
             transforms.ToTensor(),
             transforms.Normalize(mean, std)
         ])
     #cifar100_test = CIFAR100Test(path, transform=transform_test)
-    cifar100_test = torchvision.datasets.CIFAR100(root=settings.DATA_PATH, train=False, download=True, transform=transform_test)
+    cifar100_test = torchvision.datasets.CIFAR100(root='./data', train=False, download=True, transform=transform_test)
+    #print(type(cifar100_test))
     cifar100_test_loader = DataLoader(
         cifar100_test, shuffle=shuffle, num_workers=num_workers, batch_size=batch_size)
 
     return cifar100_test_loader
 
-
 def compute_mean_std(cifar100_dataset):
+    """compute the mean and std of cifar100 dataset
+    Args:
+        cifar100_training_dataset or cifar100_test_dataset
+        witch derived from class torch.utils.data
+    
+    Returns:
+        a tuple contains mean, std value of entire dataset
+    """
+
     data_r = numpy.dstack([cifar100_dataset[i][1][:, :, 0] for i in range(len(cifar100_dataset))])
     data_g = numpy.dstack([cifar100_dataset[i][1][:, :, 1] for i in range(len(cifar100_dataset))])
     data_b = numpy.dstack([cifar100_dataset[i][1][:, :, 2] for i in range(len(cifar100_dataset))])
@@ -127,7 +115,6 @@ def compute_mean_std(cifar100_dataset):
     std = numpy.std(data_r), numpy.std(data_g), numpy.std(data_b)
 
     return mean, std
-
 
 class WarmUpLR(_LRScheduler):
     """warmup_training learning rate scheduler
