@@ -326,9 +326,9 @@ if __name__ == '__main__':
     gamma = [0.2, 0.4, 0.6, 0.8]
     for g in gamma:
         res = test_decay(g)
-
+    args.decay = 0.4
     args.mil = [2, 4, 8, 16]
-    res = test_decay(0.75)
+    res = test_decay(0.5)
 
     args.mil = range(1, 20)
     args.decay = 0.4
