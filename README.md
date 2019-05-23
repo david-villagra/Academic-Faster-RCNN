@@ -22,3 +22,9 @@ And for the GoogLeNet CNN run
 python3 test_cases_googlenet.py
 ```
 
+## Test the anchor generation
+The anchor generation is tested usig the original images and labels from the Kitti dataset. This way, after cropping the image in several parts, the pieces that are close enough to the ground truth label are kept. This code outputs the cropped images (32 x 32 x 3) that fulfill the requirements with respect to the ground truth labels
+
+```
+python3 evaluate_glob.py
+```
