@@ -19,7 +19,7 @@ from scipy.special import softmax
 import matplotlib.pyplot as plt
 from PIL import Image
 
-def test_one(args):
+def test_one(args, name_img):
     net = get_network(args)
     if args.use_gpu is False:
         net.load_state_dict(torch.load(args.path_pth, map_location='cpu'))
@@ -60,9 +60,9 @@ def test_one(args):
     prob_best = np.max(probs_out)*100.0
     print(prob_best)
     best_out = settings.NUM_TO_CIFARLABELS[np.argmax(out_np)]
-    #image.show()
     plt.imshow(image)
     plt.title('Identified as: '+ best_out + ', with probability: ' + str(np.around(prob_best,decimals=2)) + '%')
+    plt.savefig('images/results/' + name_img + '_result.png')
     plt.show()
     return 0
 
