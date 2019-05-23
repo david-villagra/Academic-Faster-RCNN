@@ -235,7 +235,7 @@ def test_pixelNoise():
 
 def test_noDataShuffle(): ############################################ DONE ######################
     arg_ds = args
-    arg_ds.data_sh = False
+    arg_ds.dat_sh = False
     arg_ds.testname = 'nodatashuffle'
     results = train_net(arg_ds)
     save_results(arg_ds, results)

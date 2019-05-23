@@ -27,6 +27,7 @@ from utils import get_network, get_training_dataloader, get_test_dataloader, War
 def train(epoch, args, net, cifar100_training_loader, warmup_scheduler, loss_function, optimizer):
 
     net.train()
+    flag_print = True
     for batch_index, (images, labels) in enumerate(cifar100_training_loader):
         if epoch <= args.warm:
             warmup_scheduler.step()
@@ -39,6 +40,9 @@ def train(epoch, args, net, cifar100_training_loader, warmup_scheduler, loss_fun
             images = images.cuda()
 
         optimizer.zero_grad()
+        if flag_print is True:    
+            print(images.size())
+            flag_print = False
         outputs = net(images)
         loss = loss_function(outputs, labels)
         loss.backward()
@@ -75,7 +79,7 @@ def eval_training(epoch, net,cifar100_test_loader, args, loss_function):
 
     test_loss = 0.0 # cost function error
     correct = 0.0
-
+    
     for (images, labels) in cifar100_test_loader:
         images = Variable(images)
         labels = Variable(labels)
