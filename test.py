@@ -2,10 +2,8 @@
 #!/usr/bin/env python3
 
 import argparse
+import numpy as np
 #from dataset import *
-
-#from skimage import io
-from matplotlib import pyplot as plt
 
 import torch
 import torchvision.transforms as transforms
@@ -16,6 +14,57 @@ from conf import settings
 from utils import get_network, get_test_dataloader
 from conf import settings
 
+from scipy.ndimage import imread as jpg_to_numpy 
+from scipy.special import softmax
+import matplotlib.pyplot as plt
+from PIL import Image
+
+def test_one(args):
+    net = get_network(args)
+    if args.use_gpu is False:
+        net.load_state_dict(torch.load(args.path_pth, map_location='cpu'))
+    else:
+        net.load_state_dict(torch.load(args.path_pth), gpu = args.use_gpu)
+    #print(net)
+    net.eval()
+    image = jpg_to_numpy(args.path_img)
+    img_PIL = Image.fromarray(image)
+    #print(np.shape(image))
+    #image = Image.open(args.path_img)
+    if (args.net is 'zfnet'):
+        transform_test = transforms.Compose([
+            #transforms.ToPILImage(),
+            #transforms.RandomCrop(32, padding=4),
+            transforms.RandomResizedCrop(224-4-4),
+            transforms.Pad(4),
+            transforms.ToTensor(),
+            transforms.Normalize(settings.CIFAR100_TRAIN_MEAN, settings.CIFAR100_TRAIN_STD)
+        ])
+    elif (args.net is not 'zfnet'):
+        transform_test = transforms.Compose([
+            #transforms.ToPILImage(),
+            #transforms.RandomCrop(32, padding=4),
+            transforms.ToTensor(),
+            transforms.Normalize(settings.CIFAR100_TRAIN_MEAN, settings.CIFAR100_TRAIN_STD)
+        ])
+
+    #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    #image = torch.from_numpy(image).float().to(device)
+    img_tensor = transform_test(img_PIL).float()
+    img_tensor = img_tensor.unsqueeze(0)
+    img_tensor = Variable(img_tensor)
+    #image = Variable(image, requires_grad=True)
+    output = net(img_tensor)
+    out_np = output.detach().numpy()
+    probs_out = softmax(out_np)
+    prob_best = np.max(probs_out)*100.0
+    print(prob_best)
+    best_out = settings.NUM_TO_CIFARLABELS[np.argmax(out_np)]
+    #image.show()
+    plt.imshow(image)
+    plt.title('Identified as: '+ best_out + ', with probability: ' + str(np.around(prob_best,decimals=2)) + '%')
+    plt.show()
+    return 0
 
 def test(net='zfnet', weights=settings.WEIGHT_PATH, gpu=True, b=16, s=True, output=settings.DATA_PATH):  #####################
     net = get_network(net=net, weights=weights, use_gpu=gpu, w=2, b=b, s=s, output=output)     #####################
