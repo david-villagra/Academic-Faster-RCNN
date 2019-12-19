@@ -1,6 +1,8 @@
 # Academic implementation for Faster R-CNN
 The code in this repository is a simplified version of the Faster R-CNN algorithm for object detection, being implemneted with the GoogleNet and ZFNet CNNs for classification.
 
+For further theoretical details and the achievements obtained by this method, please refer to the final report doen for this project, available [here](https://github.com/david-villagra/Academic-Faster-RCNN/blob/master/academic_faster_rcnn.pdf)
+
 ## Prerequisites
 Install pytorch with a (recommended) virtual environment that runs python3
 ```
