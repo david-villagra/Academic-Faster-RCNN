@@ -1,5 +1,5 @@
 # Academic implementation for Faster R-CNN
-The code in this repository is a simplified version of the Faster R-CNN algorithm for object detection.
+The code in this repository is a simplified version of the Faster R-CNN algorithm for object detection, being implemneted with the GoogleNet and ZFNet CNNs for classification.
 
 ## Prerequisites
 Install pytorch with a (recommended) virtual environment that runs python3
@@ -10,7 +10,9 @@ After installing, you can check if both torch and CUDA are installed. Once that'
 
 ## Basic structure
 
-The algorithm takes as input an image that may have multiple objects in it. The image is then cropped in squared sections and the pieces aremax pooled and sent as input to a CNN that has previously been trained with images from the CIFAR-100 dataset (using coarse labels)
+This method uses the basis of the [Faster-RCNN](https://arxiv.org/abs/1506.01497?context=cs.CV) architecture, combined with a Deep Convolutional Neural Network + Fully Connected layers, in order to achieve multiple object detection with real-time performance, on outdoor road-like environments.
+
+The architecture takes as input an image that may have multiple objects in it. The image is then cropped in squared sections and the pieces are max pooled and sent as input to a CNN, that has previously been trained with images from the CIFAR-100 dataset (using coarse labels). The CNN Architecture is loosely coupled into the architecture, so it can be changed. For this project, two CNNs were implemnted: [GoogLeNet](https://research.google/pubs/pub43022/) and [ZFNet](https://arxiv.org/abs/1311.2901).
 
 ## Run the training phase
 The code is prepared to use different training parameters for the network. Therefore, the first thing to do is edit the files test_cases_zfnet.py or test_cases_googlenet.py in order to have the desired parameters. Once the parameters are set, rfor the ZFNet CNN run
